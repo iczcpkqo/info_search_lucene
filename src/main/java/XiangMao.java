@@ -71,16 +71,27 @@ public class XiangMao {
         LceOpera  indexStore = new LceOpera("index", "corpus", "cran.all.1400", "standard");
         indexStore.setUpStandardIndex();
 
+        /* * */
+            queries.getQueriesRelMap(queries.cranqrel);
+        /* * */
+
         // 获取查询结果
+        System.out.println("====================");
         System.out.println(scItems.get(0).get("query"));
         System.out.println("====================");
-        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")}, "content");
+        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")}, 2);
 
         // 打印查询结果
         for(HashMap<String, String> sd : tt)
             System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
-
     }
+
+    // 获取与标准结果匹配的查询内容
+    // 查询id, 文章id, 得分, 正确得分
+//    public getFileMatchQrel(){
+//
+//    }
+
 }
 
 /**
@@ -219,7 +230,7 @@ class LceOpera {
      * searchPar Parser模式搜索 **重载**
      * @param sc 需要搜索的内容
      * @param field 搜索相关文章的对应字段 ["id", "title","author", "publish", "content"]
-     * @return 一个存放结果图的列表
+     * @return 一个存放结果图的列表, 默认返回100条结果
      * @throws IOException IO
      * @throws ParseException Parser
      */
@@ -229,7 +240,18 @@ class LceOpera {
     /**
      * searchPar Parser模式搜索 **重载**
      * @param sc 需要搜索的内容
-     * @return 一个存放结果图的列表
+     * @param maxResults 返回搜索结果的最大数量
+     * @return 一个存放结果图的列表, 默认在 “content”中搜索
+     * @throws IOException IO
+     * @throws ParseException Parser
+     */
+    public ArrayList<HashMap<String, String>> searchPar(String[] sc, int maxResults) throws IOException, ParseException {
+        return search(sc, "content", "parser", maxResults);
+    }
+    /**
+     * searchPar Parser模式搜索 **重载**
+     * @param sc 需要搜索的内容
+     * @return 一个存放结果图的列表, 默认在 ”content“ 中进行搜索， 返回100条结果100
      * @throws IOException IO
      * @throws ParseException Parser
      */
@@ -380,16 +402,6 @@ class LceOpera {
         return corArrMap;
     }
 
-    // getIndexInfo
-
-    // Closer Writer
-
-    // exe Search
-    // Create Search
-    // getSearchResults
-    // closerSearch
-
-
 }
 
 // Scoring
@@ -404,6 +416,8 @@ class Queries {
     public String cranqrel;
     public String TRECeval;
     public ArrayList<HashMap<String, String>> queries;
+    // {queryId: {"articleId": "score"}}
+    public HashMap<Integer, HashMap<Integer, Integer>> queriesRel = new HashMap<Integer, HashMap<Integer, Integer>>();
 
     /**
      * 使用默认数据源
@@ -413,10 +427,12 @@ class Queries {
         this.cranQry = new String(Files.readAllBytes(Paths.get("src/main/java/corpus/cran.qry")));
         this.cranqrel = new String(Files.readAllBytes(Paths.get("src/main/java/corpus/cranqrel")));
         this.TRECeval = new String(Files.readAllBytes(Paths.get("src/main/java/corpus/QRelsCorrectedforTRECeval")));
+
+        this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
     }
 
     /**
-     * 根据基准路径寻找数据
+     * 根据基准路径寻找数据, 不用再写完整地址了
      * @param basePath 基础路径地址
      * @throws IOException IO
      */
@@ -424,12 +440,14 @@ class Queries {
         this.cranQry = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cran.qry")));
         this.cranqrel = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cranqrel")));
         this.TRECeval = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/QRelsCorrectedforTRECeval")));
+
+        this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
     }
 
     /**
      * 配置数据源
-     * @param q 查询文件
-     * @param qrel 标准查询结果
+     * @param q 需要查询的文件地址
+     * @param qrel 标准查询结果地址
      * @param tre 查询评分
      * @throws IOException IO
      */
@@ -437,6 +455,8 @@ class Queries {
         this.cranQry = new String(Files.readAllBytes(Paths.get(q)));
         this.cranqrel = new String(Files.readAllBytes(Paths.get(qrel)));
         this.TRECeval = new String(Files.readAllBytes(Paths.get(tre)));
+
+        this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
     }
 
     /**
@@ -445,7 +465,7 @@ class Queries {
      * @throws IOException IO
      */
     public ArrayList<HashMap<String, String>> getQry() throws IOException {
-        return txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
+        return this.queries;
     }
 
     /**
@@ -474,6 +494,26 @@ class Queries {
 //        Wrench.saver(, "dsf.txt", "src/main/java/corpus/");
 
         return txtBox;
+    }
+
+    // convert the results Map
+//    public HashMap<Integer, HashMap<String, String>> getQueriesRelMap(String txt){
+
+    /**
+     * getQueriesRelMap 将文件中的数据加载到变量中
+     * @param txt 结果字符串
+     */
+    public HashMap<Integer, HashMap<Integer, Integer>> getQueriesRelMap(String txt){
+        String[] txtSpliter = txt.split("\n");
+        for(String str : txtSpliter){
+            int[] nus = Wrench.splitToInt(str.replaceAll("\\s+", " "));
+            if(!this.queriesRel.containsKey(nus[0])) {
+                HashMap<Integer, Integer> sampleMap = new HashMap<Integer, Integer>();
+                this.queriesRel.put(nus[0], sampleMap);
+            }
+            this.queriesRel.get(nus[0]).put(nus[1], nus[2]);
+        }
+        return this.queriesRel;
     }
 }
 
@@ -531,22 +571,26 @@ class Wrench {
         writer.close();
     }
 
-    // 后部写入
+    /**
+     * splitToInt 将一段存数字的字符串转换成浮点型, 默认按照空格切割"\\s"
+     * @param txt 需要转换的字符串
+     * @return 转换后的float数组
+     */
+    public static int[] splitToInt(String txt){
+        return splitToInt(txt, "\\s");
+    }
+
+    /**
+     * splitToInt 将一段存数字的字符串转换成浮点型
+     * @param txt 需要转换的字符串
+     * @param splitStr 数字之间是用什么切割的
+     * @return 转换后的float数组
+     */
+    public static int[] splitToInt(String txt, String splitStr){
+        String[] txtSpliter = txt.split(splitStr);
+        int[] nus = new int[txtSpliter.length];
+        for(int i=0; i<nus.length; i++)
+            nus[i] = Integer.parseInt(txtSpliter[i]);
+        return nus;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
