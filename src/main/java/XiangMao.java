@@ -64,6 +64,11 @@ public class XiangMao {
  *          System.out.println(sd.get("id") + "|" + sd.get("author"));
 
  */
+
+
+        long startTime; // = System.currentTimeMillis(); //获取开始时间
+        long endTime; // = System.currentTimeMillis(); //获取结束时间
+
         // 设置基础目录
         String baseDir = "src/main/java";
 
@@ -72,9 +77,20 @@ public class XiangMao {
         ArrayList<HashMap<String, String>> scItems =  queries.getQry();
 
         // 创建索引
+        // time
+        System.out.println("Index being created...");
+        startTime = System.currentTimeMillis(); //获取开始时间
+
         LceOpera  indexStore = new LceOpera("index", "corpus", "cran.all.1400");
         indexStore.setUpStandardIndex();
+
+        // time
+        endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("Index creation completed, time consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+
+//        indexStore.setUpStandardIndexWithStopWords();
 //        indexStore.setUpSimpleIndex();
+
 
         /* * */
             queries.getQueriesRelMap(queries.cranqrel);
@@ -84,14 +100,32 @@ public class XiangMao {
 //        System.out.println("====================");
 //        System.out.println(scItems.get(0).get("query"));
 //        System.out.println("====================");
-        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")} , "total");
+
+        // time
+        System.out.println("Start your search...");
+        startTime = System.currentTimeMillis(); //获取开始时间
+
+        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")} , "content");
+
+        // time
+        endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("Search completed, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
 
         // 打印查询结果
 //        for(HashMap<String, String> sd : tt)
 //            System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
 
 //        getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore);
+
+        // time
+        System.out.println("Search results are being saved...");
+        startTime = System.currentTimeMillis(); //获取开始时间
+
         getRelForTrecEval(queries.getQry(), indexStore);
+
+        // time
+        endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("Search results have been saved, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
     }
 
 
@@ -354,7 +388,7 @@ class LceOpera {
 
         // 配置计分方法
 //        this.writerConfig.setSimilarity(new TFIDFSimilarity());
-        this.writerConfig.setSimilarity(new BM25Similarity());
+//        this.writerConfig.setSimilarity(new BM25Similarity());
 //        this.writerConfig.setSimilarity(new LMDirichletSimilarity());
 //        this.writerConfig.setSimilarity(new ClassicSimilarity());
 //        this.writerConfig.setSimilarity(new BooleanSimilarity());
@@ -476,7 +510,7 @@ class LceOpera {
         IndexSearcher iSearcher = new IndexSearcher(iReader);
 
 //        iSearcher.setSimilarity(new ClassicSimilarity());
-        iSearcher.setSimilarity(new BM25Similarity());
+//        iSearcher.setSimilarity(new BM25Similarity());
 //        iSearcher.setSimilarity(new LMDirichletSimilarity());
 //        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity()}));
 //        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new BooleanSimilarity()}));
