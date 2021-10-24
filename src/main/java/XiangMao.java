@@ -3,47 +3,51 @@
 //       -[x]  2. 在指定字段中搜索
 //       -[x]  3. 保存文件
 //       -[x]  3. 格式化query文件搜索
-//       -[ ]  4. 使用query文件搜索
-//       -[ ]  4. 将搜索结果和目标结果对比
-//       -[ ]  5. 保存搜索评分
-//       -[ ]  6. 索引中增加全文字段
-//       -[ ]  7. 布尔查询解析器
-//       -[ ]  8. 关键词分析器
-//       -[ ]  9. 不同分析器
+//       -[x]  4. 使用query文件搜索
+//       -[ ]  4. 特殊字符替换
+//       -[x]  4. 将搜索结果和目标结果对比
+//       -[x]  5. 保存搜索评分
+//       -[x]  6. 索引中增加全文字段
+//       -[x]  7. 布尔查询解析器
+//       -[x]  8. 关键词分析器
+//       -[x]  9. 不同分析器
 //       -[ ]  10. 剥离时间
 //       -[ ]  11. 时间段搜索
 //       -[ ]  12. evil评价器
 //       -[ ]  13. UX
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.StopwordAnalyzerBase;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.*;
+import org.apache.lucene.search.similarities.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.util.Version;
 
 
 public class XiangMao {
-    public static void  main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException {
 //        ArrayList<HashMap<String, String>> tt =  indexStore.search("study of high-speed viscous flow past a two-dimensional", "parser", "id");
 //        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar("study of high-speed viscous flow past a two-dimensional", "content");
 //        String[] aa = {"incompressible", "necessary", "compressible"};
@@ -68,8 +72,9 @@ public class XiangMao {
         ArrayList<HashMap<String, String>> scItems =  queries.getQry();
 
         // 创建索引
-        LceOpera  indexStore = new LceOpera("index", "corpus", "cran.all.1400", "standard");
+        LceOpera  indexStore = new LceOpera("index", "corpus", "cran.all.1400");
         indexStore.setUpStandardIndex();
+//        indexStore.setUpSimpleIndex();
 
         /* * */
             queries.getQueriesRelMap(queries.cranqrel);
@@ -79,19 +84,94 @@ public class XiangMao {
         System.out.println("====================");
         System.out.println(scItems.get(0).get("query"));
         System.out.println("====================");
-        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")}, 2);
+        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")} , "total");
 
         // 打印查询结果
         for(HashMap<String, String> sd : tt)
             System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
+
+        getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore);
     }
 
-    // 获取与标准结果匹配的查询内容
-    // 查询id, 文章id, 得分, 正确得分
-//    public getFileMatchQrel(){
-//
-//    }
+    /**
+     * getFileMatchQryRel 将我的结果和搜索结果放在一起对比
+     * @param query 查询文件
+     * @param tarRel 需要对比的结果
+     * @param opera 搜索类
+     * @throws IOException IO
+     * @throws ParseException IO
+     */
+    public static void getFileMatchQryRel(ArrayList<HashMap<String, String>> query, HashMap<Integer, HashMap<Integer, Integer>> tarRel, LceOpera opera) throws IOException, ParseException {
 
+        ArrayList<StringBuilder> relFileStr = new ArrayList<>();
+        ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
+        float sumSucceed = 0;
+        float sumAll = 0;
+
+        for (HashMap<String, String> q : query){
+            StringBuilder pushStr = new StringBuilder();
+            StringBuilder pushTrecEvalStr = new StringBuilder();
+            int rank = 0;
+            ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total");
+            HashMap<Integer, HashMap<String, String>> scRel = Wrench.arrToHasMap(scRelArr);
+            for(Integer i : tarRel.get(Integer.valueOf(q.get("id"))).keySet()){
+                rank++;
+                /* *
+                 *  查询id: q.get("id")
+                 *  文章id: i
+                 *  正确得分: tarRel.get(Integer.valueOf(q.get("id"))).get(i)
+                 *  我的得分: scRel.get(i).get("score")
+                 */
+                sumAll++;
+                pushStr.append(q.get("id")).append(",").
+                        append(i).append(",").
+                        append(tarRel.get(Integer.valueOf(q.get("id"))).get(i)).append(",");
+                /* *
+                 *  查询id: q.get("id")
+                 *  固定Q0
+                 *  文章id: i
+                 *  文档排名: rank
+                 *  我的得分: scRel.get(i).get("score")
+                 *  使用分析器: MULTI
+                 */
+                pushTrecEvalStr.append(q.get("id")).append(" ").
+                        append("Q0").append(" ").
+                        append(i).append(" ").
+                        append(rank).append(" ").
+                        append(tarRel.get(Integer.valueOf(q.get("id"))).get(i)).append(" ");
+
+                if (scRel.containsKey(i)) {
+                    sumSucceed++;
+                    pushStr.append(scRel.get(i).get("score")).append("\n");
+                    pushTrecEvalStr.append(scRel.get(i).get("score")).append(" ").append("MULTI").append("\n");
+                }
+                else {
+                    pushStr.append(0).append("\n");
+                    pushTrecEvalStr.append(0).append(" ").append("MULTI").append("\n");
+                }
+            }
+            relFileStr.add(pushStr);
+            relFileTrecEvalStr.add(pushTrecEvalStr);
+        }
+
+        // 计算并存入覆盖率
+        // System.out.println(relFileStr.add(new StringBuilder("覆盖率: " + String.format("%.0f",sumSucceed/sumAll*100) + "%")));
+
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+        String dateStr = formatter.format(date);
+
+        // 保存数据进入CSV文件
+        Wrench.saveNew("", "cranqrel.match_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
+        for(StringBuilder s : relFileStr)
+            Wrench.saveMore(s.toString(), "cranqrel.match_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
+
+        // 保存trec_eval所需要的文件
+        Wrench.saveNew("", "my.record_" + dateStr + "", "src/main/java/my_record/");
+        for(StringBuilder s : relFileTrecEvalStr)
+            Wrench.saveMore(s.toString(), "my.record_" + dateStr + "", "src/main/java/my_record/");
+
+    }
 }
 
 /**
@@ -109,13 +189,16 @@ class LceOpera {
     public IndexWriterConfig writerConfig;
     public IndexWriter writer;
     public int maxResults = 100;
+    public CharArraySet stopWords;
 
     /**
      * LceOpera 初始化搜索类
      */
     public LceOpera(){
+
         // 初始化分析器
         this.ANALYZER_PICKER.put("standard", new StandardAnalyzer());
+//        this.ANALYZER_PICKER.put("standard", new StandardAnalyzer(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET));
 
         // 初始化索引仓库
         this.indexPath = "src/main/java" + "/index/";
@@ -131,11 +214,36 @@ class LceOpera {
      * @param indexPath 索引仓库, 基于程序文件
      * @param corpusPath 文档仓库, 基于程序文件
      * @param corpusFileName 文档名称, 一个
-     * @param analyzerName 分析器名称, 一个
      */
-    public LceOpera(String indexPath, String corpusPath, String corpusFileName, String analyzerName){
-        // 初始化分析器
-        this.ANALYZER_PICKER.put(analyzerName, new StandardAnalyzer());
+//    public LceOpera(String indexPath, String corpusPath, String corpusFileName, String analyzerName){
+    public LceOpera(String indexPath, String corpusPath, String corpusFileName){
+
+        // 初始化停顿词
+//        System.out.println(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+        this.stopWords = new CharArraySet(0, true);
+//        this.stopWords.addAll(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+        this.stopWords.add("?");
+        this.stopWords.add(",");
+        this.stopWords.add(".");
+        this.stopWords.add("/");
+        this.stopWords.add("-");
+        this.stopWords.add("(");
+        this.stopWords.add(")");
+        this.stopWords.add("=");
+        this.stopWords.add("+");
+        this.stopWords.add("\n");
+        this.stopWords.add("\\n");
+        this.stopWords.add("\r");
+        this.stopWords.add("\\r");
+
+        // 初始化分析器 选择组
+        this.ANALYZER_PICKER.put("standard", new StandardAnalyzer());
+        this.ANALYZER_PICKER.put("standard-with-stop-words", new StandardAnalyzer(this.stopWords));
+        this.ANALYZER_PICKER.put("simple", new SimpleAnalyzer());
+//        this.ANALYZER_PICKER.put("standard", new StandardAnalyzer(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET));
+//        this.ANALYZER_PICKER.put("standard", new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet()));
+//        System.out.println(EnglishAnalyzer.getDefaultStopSet());
+//        System.out.println("------------------------------");
 
         // 初始化索引仓库
         this.indexPath = "src/main/java" + "/" + indexPath + "/";
@@ -147,11 +255,27 @@ class LceOpera {
     }
 
     /**
-     * setUpStandardIndex 创建 标准索引
+     * setUpStandardIndex 创建 使用标准分析器的索引
      * @throws IOException IO
      */
     public void setUpStandardIndex() throws IOException {
         createIndex(this.indexPath, this.corpusPath + this.corName, "standard", "ITABW");
+    }
+
+    /**
+     * setUpStandardIndexWithStopWords 创建 使用有自定义停顿词的标准分析器的索引
+     * @throws IOException IO
+     */
+    public void setUpStandardIndexWithStopWords() throws IOException {
+        createIndex(this.indexPath, this.corpusPath + this.corName, "standard-with-stop-words", "ITABW");
+    }
+
+    /**
+     * setUpStandardIndexWithStopWords 创建 使用简单分析器的索引
+     * @throws IOException IO
+     */
+    public void setUpSimpleIndex() throws IOException {
+        createIndex(this.indexPath, this.corpusPath + this.corName, "simple", "ITABW");
     }
 
     /**
@@ -182,6 +306,17 @@ class LceOpera {
 
         // 舵手配置器
         this.writerConfig = new IndexWriterConfig((this.analyzer));
+
+        // 配置计分方法
+//        this.writerConfig.setSimilarity(new TFIDFSimilarity());
+        this.writerConfig.setSimilarity(new BM25Similarity());
+//        this.writerConfig.setSimilarity(new LMDirichletSimilarity());
+//        this.writerConfig.setSimilarity(new ClassicSimilarity());
+//        this.writerConfig.setSimilarity(new BooleanSimilarity());
+//        this.writerConfig.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new BooleanSimilarity()}));
+//        this.writerConfig.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new LMDirichletSimilarity()}));
+
+        // 设置写入方式
         this.writerConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
         // 创建舵手
@@ -203,6 +338,7 @@ class LceOpera {
             doc.add(new TextField("author", articleMap.get("author"), Field.Store.YES));
             doc.add(new TextField("publish", articleMap.get("publish"), Field.Store.YES));
             doc.add(new TextField("content", articleMap.get("content"), Field.Store.YES));
+            doc.add(new TextField("total", articleMap.get("total"), Field.Store.YES));
             documents.add(doc);
         }
 
@@ -235,7 +371,7 @@ class LceOpera {
      * @throws ParseException Parser
      */
     public ArrayList<HashMap<String, String>> searchPar(String[] sc, String field) throws IOException, ParseException {
-        return search(sc, field, "parser", 100);
+        return search(sc, field, "parser", this.maxResults);
     }
     /**
      * searchPar Parser模式搜索 **重载**
@@ -248,6 +384,7 @@ class LceOpera {
     public ArrayList<HashMap<String, String>> searchPar(String[] sc, int maxResults) throws IOException, ParseException {
         return search(sc, "content", "parser", maxResults);
     }
+
     /**
      * searchPar Parser模式搜索 **重载**
      * @param sc 需要搜索的内容
@@ -256,7 +393,7 @@ class LceOpera {
      * @throws ParseException Parser
      */
     public ArrayList<HashMap<String, String>> searchPar(String[] sc) throws IOException, ParseException {
-        return search(sc, "total", "parser", 100);
+        return search(sc, "content", "parser", this.maxResults);
     }
 
 
@@ -291,7 +428,14 @@ class LceOpera {
         Directory indexDir =  FSDirectory.open(Paths.get(this.indexPath));
         DirectoryReader iReader = DirectoryReader.open(indexDir);
         IndexSearcher iSearcher = new IndexSearcher(iReader);
-        
+
+//        iSearcher.setSimilarity(new ClassicSimilarity());
+        iSearcher.setSimilarity(new BM25Similarity());
+//        iSearcher.setSimilarity(new LMDirichletSimilarity());
+//        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity()}));
+//        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new BooleanSimilarity()}));
+//        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new LMDirichletSimilarity()}));
+//        iSearcher.setSimilarity(new BooleanSimilarity());
         // 选择搜索方式
         Query query = null;
         if (Objects.equals(type, "parser")){
@@ -311,7 +455,7 @@ class LceOpera {
 
         ScoreDoc[] hits = iSearcher.search(query, maxResults).scoreDocs;
 
-        System.out.println(hits.length);
+//        System.out.println(hits.length);
 
 /**
  *
@@ -332,6 +476,7 @@ class LceOpera {
             relMap.put("author", hitDoc.get("author"));
             relMap.put("publish", hitDoc.get("publish"));
             relMap.put("content", hitDoc.get("content"));
+            relMap.put("total", hitDoc.get("total"));
             relMap.put("score", String.valueOf(hit.score));
             hitsMap.add(relMap);
         }
@@ -378,8 +523,11 @@ class LceOpera {
             StringBuilder conTail = new StringBuilder();
             for (int j=4; j<getTitle.length; j++)
                 conTail.append(". ").append(getTitle[j]);
-            oneArticle.put("content", conTail.toString().replaceAll("\n|\r", ""));
-
+//            oneArticle.put("content", conTail.toString().replaceAll("\n|\r", "").replaceAll("[?]", " "));
+            oneArticle.put("content", conTail.toString());
+//            oneArticle.put("total", relBox[i].replaceAll("\\n|\\r|[?]", " "));
+            oneArticle.put("total", relBox[i]);
+//            System.out.println(oneArticle.get("total"));
             corArrMap.add(oneArticle);
 
 //            if (getTitle.length!=5) {
@@ -482,7 +630,7 @@ class Queries {
         for(int i=1; i<txtSplitter.length; i++){
             HashMap<String, String> q = new HashMap<String, String >();
             q.put("id", String.valueOf(i));
-            q.put("query", txtSplitter[i].replaceAll("\r", ""));
+            q.put("query", txtSplitter[i].replaceAll("\r", "").replaceAll("[?]", " "));
             txtBox.add(q);
             Wrench.saveMore(".I " + q.get("id") + "\n.W\n" + q.get("query"), fileName, savePath);
         }
@@ -592,5 +740,18 @@ class Wrench {
         for(int i=0; i<nus.length; i++)
             nus[i] = Integer.parseInt(txtSpliter[i]);
         return nus;
+    }
+
+    /**
+     * arrToHasMap 将一个列表转换为二维哈希
+     * @param arr 需要转换的变量
+     * @return 二维哈希
+     */
+    public static HashMap<Integer, HashMap<String, String>> arrToHasMap(ArrayList<HashMap<String, String>> arr){
+        HashMap<Integer, HashMap<String, String>> conToHash = new HashMap<>();
+        for(HashMap<String, String> hs : arr){
+            conToHash.put(Integer.valueOf(hs.get("id")), hs);
+        }
+        return conToHash;
     }
 }
