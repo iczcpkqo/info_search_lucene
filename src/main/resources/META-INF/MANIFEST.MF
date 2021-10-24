@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Main-Class: XiangMao
+Class-Path: lucene-sandbox-8.6.3.jar lucene-queryparser-8.6.3.jar lucene
+ -analyzers-common-8.6.3.jar lucene-queries-8.6.3.jar lucene-core-8.6.3.
+ jar
+

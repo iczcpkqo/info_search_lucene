@@ -65,77 +65,98 @@ public class XiangMao {
 
  */
 
-
-        long startTime; // = System.currentTimeMillis(); //获取开始时间
-        long endTime; // = System.currentTimeMillis(); //获取结束时间
-
-        // 设置基础目录
-        String baseDir = "src/main/java";
-
-        // 获取查询数据
-        Queries queries = new Queries(baseDir);
-        ArrayList<HashMap<String, String>> scItems =  queries.getQry();
-
-        // 创建索引
-        // time
-        System.out.println("Index being created...");
-        startTime = System.currentTimeMillis(); //获取开始时间
-
-        LceOpera  indexStore = new LceOpera("index", "corpus", "cran.all.1400");
-        indexStore.setUpStandardIndex();
-
-        // time
-        endTime = System.currentTimeMillis(); //获取结束时间
-        System.out.println("Index creation completed, time consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
-
-//        indexStore.setUpStandardIndexWithStopWords();
-//        indexStore.setUpSimpleIndex();
+        String[] analyzerTimes = {"standard", "standard_with_stop_words", "simple"};
+        String[] similarTimes = {"bm25", "classic", "lmd", "bool", "mul"};
 
 
-        /* * */
-            queries.getQueriesRelMap(queries.cranqrel);
-        /* * */
+        for(String tryAnalyzer : analyzerTimes) {
+            for (String trySimilar: similarTimes) {
+                long startTime; // = System.currentTimeMillis(); //获取开始时间
+                long endTime; // = System.currentTimeMillis(); //获取结束时间
 
-        // 获取查询结果
-//        System.out.println("====================");
-//        System.out.println(scItems.get(0).get("query"));
-//        System.out.println("====================");
+                // 设置基础目录
+                String baseDir = "src/main/java";
 
-        // time
-        System.out.println("Start your search...");
-        startTime = System.currentTimeMillis(); //获取开始时间
+                // 获取查询数据
+                Queries queries = new Queries(baseDir);
+                ArrayList<HashMap<String, String>> scItems = queries.getQry();
 
-        ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")} , "content");
+                // 创建索引
+                // time
+                System.out.println("Index being created...");
+                startTime = System.currentTimeMillis(); //获取开始时间
 
-        // time
-        endTime = System.currentTimeMillis(); //获取结束时间
-        System.out.println("Search completed, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+                LceOpera indexStore = new LceOpera("index", "corpus", "cran.all.1400");
 
-        // 打印查询结果
-//        for(HashMap<String, String> sd : tt)
-//            System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
+                switch (tryAnalyzer) {
+                    case "standard_with_stop_words":
+                        indexStore.setUpStandardIndexWithStopWords();
+                        break;
+                    case "simple":
+                        indexStore.setUpSimpleIndex();
+                        break;
+                    default:
+                        indexStore.setUpStandardIndex();
+                        break;
+                }
 
-//        getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore);
 
-        // time
-        System.out.println("Search results are being saved...");
-        startTime = System.currentTimeMillis(); //获取开始时间
+                // time
+                endTime = System.currentTimeMillis(); //获取结束时间
+                System.out.println("Index creation completed, time consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
 
-        getRelForTrecEval(queries.getQry(), indexStore);
+                //        indexStore.setUpStandardIndexWithStopWords();
+                //        indexStore.setUpSimpleIndex();
 
-        // time
-        endTime = System.currentTimeMillis(); //获取结束时间
-        System.out.println("Search results have been saved, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+
+                /* * */
+                queries.getQueriesRelMap(queries.cranqrel);
+                /* * */
+
+                // 获取查询结果
+                //        System.out.println("====================");
+                //        System.out.println(scItems.get(0).get("query"));
+                //        System.out.println("====================");
+
+                // time
+                System.out.println("Start your search...");
+                startTime = System.currentTimeMillis(); //获取开始时间
+
+//                ArrayList<HashMap<String, String>> tt = indexStore.searchPar(new String[]{scItems.get(0).get("query")}, "content");
+
+
+                // 1-5级 打印查询结果
+                //        for(HashMap<String, String> sd : tt)
+                //            System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
+
+                getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore, tryAnalyzer, trySimilar);
+
+                // time
+                endTime = System.currentTimeMillis(); //获取结束时间
+                System.out.println("Search completed, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+
+                // time
+                System.out.println("Search results are being saved...");
+                startTime = System.currentTimeMillis(); //获取开始时间
+
+                getRelForTrecEval(queries.getQry(), indexStore, tryAnalyzer, trySimilar);
+
+                // time
+                endTime = System.currentTimeMillis(); //获取结束时间
+                System.out.println("Search results have been saved, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+            }
+        }
     }
 
 
-    public static void  getRelForTrecEval(ArrayList<HashMap<String, String>> query, LceOpera opera) throws IOException, ParseException {
+    public static void  getRelForTrecEval(ArrayList<HashMap<String, String>> query, LceOpera opera, String tryAnalyzer, String trySimilar) throws IOException, ParseException {
         ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
 
         for (HashMap<String, String> q : query) {
             StringBuilder pushTrecEvalStr = new StringBuilder();
             int rank = 0;
-            ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total");
+            ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total", trySimilar);
+//            ArrayList<HashMap<String, String>> scRelArr = opera.searchBool(q.get("query").split(" "), "total");
             for (HashMap<String, String> hit : scRelArr) {
                 rank++;
                 /* *
@@ -160,9 +181,9 @@ public class XiangMao {
         String dateStr = formatter.format(date);
 
         // 保存trec_eval所需要的文件
-        Wrench.saveNew("", "my.record_" + dateStr + "", "src/main/java/my_record/");
+        Wrench.saveNew("", "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/my_record/");
         for(StringBuilder s : relFileTrecEvalStr)
-            Wrench.saveMore(s.toString(), "my.record_" + dateStr + "", "src/main/java/my_record/");
+            Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/my_record/");
 
     }
 
@@ -175,7 +196,7 @@ public class XiangMao {
      * @throws IOException IO
      * @throws ParseException IO
      */
-    public static void getFileMatchQryRel(ArrayList<HashMap<String, String>> query, HashMap<Integer, HashMap<Integer, Integer>> tarRel, LceOpera opera) throws IOException, ParseException {
+    public static void getFileMatchQryRel(ArrayList<HashMap<String, String>> query, HashMap<Integer, HashMap<Integer, Integer>> tarRel, LceOpera opera, String tryAnalyzer, String trySimilar) throws IOException, ParseException {
 
         ArrayList<StringBuilder> relFileStr = new ArrayList<>();
         ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
@@ -186,7 +207,7 @@ public class XiangMao {
             StringBuilder pushStr = new StringBuilder();
             StringBuilder pushTrecEvalStr = new StringBuilder();
             int rank = 0;
-            ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total");
+            ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total", trySimilar);
             HashMap<Integer, HashMap<String, String>> scRel = Wrench.arrToHasMap(scRelArr);
 
             ///***
@@ -241,14 +262,14 @@ public class XiangMao {
         String dateStr = formatter.format(date);
 
         // 保存数据进入CSV文件
-        Wrench.saveNew("", "cranqrel.match_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
+        Wrench.saveNew("", "cranqrel.match_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
         for(StringBuilder s : relFileStr)
-            Wrench.saveMore(s.toString(), "cranqrel.match_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
+            Wrench.saveMore(s.toString(), "cranqrel.match_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
 
         // 保存trec_eval所需要的文件
-        Wrench.saveNew("", "my.record_" + dateStr + "", "src/main/java/my_record/");
+        Wrench.saveNew("", "match.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/qry_match_rel/");
         for(StringBuilder s : relFileTrecEvalStr)
-            Wrench.saveMore(s.toString(), "my.record_" + dateStr + "", "src/main/java/my_record/");
+            Wrench.saveMore(s.toString(), "match.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/qry_match_rel/");
 
     }
 }
@@ -300,7 +321,7 @@ class LceOpera {
         // 初始化停顿词
 //        System.out.println(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
         this.stopWords = new CharArraySet(0, true);
-        this.stopWords.addAll(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+//        this.stopWords.addAll(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
         this.stopWords.add("?");
         this.stopWords.add(",");
         this.stopWords.add(".");
@@ -361,7 +382,7 @@ class LceOpera {
      * createIndex 创建索引
      * @param indexPath 索引在工作路径地址
      * @param conPath 文档内容地址
-     * @param analyzerName 分析器 ["standard"]
+     * @param analyzerName 分析器 ["standard", "standard_with_stop_words", "simple"]
      * @param textSplitModel 文本分割器 ["ITABW"]
      * @throws IOException IO
      */
@@ -388,7 +409,7 @@ class LceOpera {
 
         // 配置计分方法
 //        this.writerConfig.setSimilarity(new TFIDFSimilarity());
-//        this.writerConfig.setSimilarity(new BM25Similarity());
+        this.writerConfig.setSimilarity(new BM25Similarity());
 //        this.writerConfig.setSimilarity(new LMDirichletSimilarity());
 //        this.writerConfig.setSimilarity(new ClassicSimilarity());
 //        this.writerConfig.setSimilarity(new BooleanSimilarity());
@@ -440,7 +461,7 @@ class LceOpera {
      * @throws ParseException Parser
      */
     public ArrayList<HashMap<String, String>> searchPar(String[] sc, String field, int maxResults) throws IOException, ParseException {
-        return search(sc, field, "parser", maxResults);
+        return search(sc, field, "parser", "bm25", maxResults);
     }
     /**
      * searchPar Parser模式搜索 **重载**
@@ -450,8 +471,8 @@ class LceOpera {
      * @throws IOException IO
      * @throws ParseException Parser
      */
-    public ArrayList<HashMap<String, String>> searchPar(String[] sc, String field) throws IOException, ParseException {
-        return search(sc, field, "parser", this.maxResults);
+    public ArrayList<HashMap<String, String>> searchPar(String[] sc, String field, String similar) throws IOException, ParseException {
+        return search(sc, field, "parser", similar, this.maxResults);
     }
     /**
      * searchPar Parser模式搜索 **重载**
@@ -462,7 +483,7 @@ class LceOpera {
      * @throws ParseException Parser
      */
     public ArrayList<HashMap<String, String>> searchPar(String[] sc, int maxResults) throws IOException, ParseException {
-        return search(sc, "content", "parser", maxResults);
+        return search(sc, "content", "parser", "bm25", maxResults);
     }
 
     /**
@@ -473,7 +494,7 @@ class LceOpera {
      * @throws ParseException Parser
      */
     public ArrayList<HashMap<String, String>> searchPar(String[] sc) throws IOException, ParseException {
-        return search(sc, "content", "parser", this.maxResults);
+        return search(sc, "content", "parser", "bm25",this.maxResults);
     }
 
 
@@ -485,8 +506,8 @@ class LceOpera {
      * @throws IOException IO
      * @throws ParseException Parser
      */
-    public ArrayList<HashMap<String, String>> searchBool(String[] sc, String field) throws IOException, ParseException {
-        return search(sc, field, "boolean", 100);
+    public ArrayList<HashMap<String, String>> searchBool(String[] sc, String field, String similar) throws IOException, ParseException {
+        return search(sc, field, "boolean", similar,this.maxResults);
     }
 
     /**
@@ -499,7 +520,7 @@ class LceOpera {
      * @throws IOException IO
      * @throws ParseException Parser
      */
-    public <E> ArrayList<HashMap<String, String>> search(E[] sc, String scField, String type, int maxResults) throws IOException, ParseException {
+    public <E> ArrayList<HashMap<String, String>> search(E[] sc, String scField, String type, String similar, int maxResults) throws IOException, ParseException {
         if(this.writer == null) {
             System.out.println("Please Set Up Index First!");
             return null;
@@ -510,12 +531,34 @@ class LceOpera {
         IndexSearcher iSearcher = new IndexSearcher(iReader);
 
 //        iSearcher.setSimilarity(new ClassicSimilarity());
-//        iSearcher.setSimilarity(new BM25Similarity());
 //        iSearcher.setSimilarity(new LMDirichletSimilarity());
 //        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity()}));
 //        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new BooleanSimilarity()}));
 //        iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new LMDirichletSimilarity()}));
 //        iSearcher.setSimilarity(new BooleanSimilarity());
+
+        switch (similar) {
+            case "bm25":
+                iSearcher.setSimilarity(new BM25Similarity());
+                break;
+            case "classic":
+                iSearcher.setSimilarity(new ClassicSimilarity());
+                break;
+            case "lmd":
+                iSearcher.setSimilarity(new LMDirichletSimilarity());
+                break;
+            case "bool":
+                iSearcher.setSimilarity(new BooleanSimilarity());
+                break;
+            case "mul":
+                iSearcher.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new LMDirichletSimilarity(), new BooleanSimilarity()}));
+                break;
+            default:
+                iSearcher.setSimilarity(new BM25Similarity());
+                break;
+        }
+
+
         // 选择搜索方式
         Query query = null;
         if (Objects.equals(type, "parser")){
@@ -525,9 +568,8 @@ class LceOpera {
             BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
             // 将sc中的内容全部拿出来创建查询条件并推入查询饵中
             for (E e: sc){
-                System.out.println(e);
                 Query term0 = new TermQuery(new Term(scField, e.toString()));
-                queryBuilder.add(new BooleanClause(term0, BooleanClause.Occur.MUST));
+                queryBuilder.add(new BooleanClause(term0, BooleanClause.Occur.SHOULD));
             }
             query = queryBuilder.build();
         }
