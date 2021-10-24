@@ -4,7 +4,7 @@
 //       -[x]  3. 保存文件
 //       -[x]  3. 格式化query文件搜索
 //       -[x]  4. 使用query文件搜索
-//       -[ ]  4. 特殊字符替换
+//       -[x]  4. 特殊字符替换
 //       -[x]  4. 将搜索结果和目标结果对比
 //       -[x]  5. 保存搜索评分
 //       -[x]  6. 索引中增加全文字段
@@ -13,8 +13,8 @@
 //       -[x]  9. 不同分析器
 //       -[ ]  10. 剥离时间
 //       -[ ]  11. 时间段搜索
-//       -[ ]  12. evil评价器
-//       -[ ]  13. UX
+//       -[x]  12. evil评价器
+//       -[x]  13. UX
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -81,17 +81,57 @@ public class XiangMao {
         /* * */
 
         // 获取查询结果
-        System.out.println("====================");
-        System.out.println(scItems.get(0).get("query"));
-        System.out.println("====================");
+//        System.out.println("====================");
+//        System.out.println(scItems.get(0).get("query"));
+//        System.out.println("====================");
         ArrayList<HashMap<String, String>> tt =  indexStore.searchPar(new String[]{scItems.get(0).get("query")} , "total");
 
         // 打印查询结果
-        for(HashMap<String, String> sd : tt)
-            System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
+//        for(HashMap<String, String> sd : tt)
+//            System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
 
-        getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore);
+//        getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore);
+        getRelForTrecEval(queries.getQry(), indexStore);
     }
+
+
+    public static void  getRelForTrecEval(ArrayList<HashMap<String, String>> query, LceOpera opera) throws IOException, ParseException {
+        ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
+
+        for (HashMap<String, String> q : query) {
+            StringBuilder pushTrecEvalStr = new StringBuilder();
+            int rank = 0;
+            ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total");
+            for (HashMap<String, String> hit : scRelArr) {
+                rank++;
+                /* *
+                 *  查询id: q.get("id")
+                 *  固定Q0
+                 *  文章id: hit.get("id")
+                 *  文档排名: rank
+                 *  我的得分: hit.get("score")
+                 *  使用分析器: MULTI
+                 */
+                pushTrecEvalStr.append(q.get("id")).append(" ").
+                        append("Q0").append(" ").
+                        append(hit.get("id")).append(" ").
+                        append(rank).append(" ").
+                        append(hit.get("score")).append(" ").
+                        append("STANDARD").append("\n");
+            }
+            relFileTrecEvalStr.add(pushTrecEvalStr);
+        }
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+        String dateStr = formatter.format(date);
+
+        // 保存trec_eval所需要的文件
+        Wrench.saveNew("", "my.record_" + dateStr + "", "src/main/java/my_record/");
+        for(StringBuilder s : relFileTrecEvalStr)
+            Wrench.saveMore(s.toString(), "my.record_" + dateStr + "", "src/main/java/my_record/");
+
+    }
+
 
     /**
      * getFileMatchQryRel 将我的结果和搜索结果放在一起对比
@@ -114,6 +154,8 @@ public class XiangMao {
             int rank = 0;
             ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total");
             HashMap<Integer, HashMap<String, String>> scRel = Wrench.arrToHasMap(scRelArr);
+
+            ///***
             for(Integer i : tarRel.get(Integer.valueOf(q.get("id"))).keySet()){
                 rank++;
                 /* *
@@ -134,22 +176,25 @@ public class XiangMao {
                  *  我的得分: scRel.get(i).get("score")
                  *  使用分析器: MULTI
                  */
+//                String ff = String.format("%.4f", tarRel.get(Integer.valueOf(q.get("id"))).get(i).floatValue());
                 pushTrecEvalStr.append(q.get("id")).append(" ").
                         append("Q0").append(" ").
                         append(i).append(" ").
-                        append(rank).append(" ").
-                        append(tarRel.get(Integer.valueOf(q.get("id"))).get(i)).append(" ");
+                        append(rank).append(" ");
+//                        append(ff).append(" ");
 
                 if (scRel.containsKey(i)) {
                     sumSucceed++;
                     pushStr.append(scRel.get(i).get("score")).append("\n");
-                    pushTrecEvalStr.append(scRel.get(i).get("score")).append(" ").append("MULTI").append("\n");
+//                    pushTrecEvalStr.append(String.format("%.6f", Integer.valueOf(scRel.get(i).get("score")).floatValue() )).append(" ").append("STANDARD").append("\n");
+                    pushTrecEvalStr.append( scRel.get(i).get("score") ).append(" ").append("STANDARD").append("\n");
                 }
                 else {
                     pushStr.append(0).append("\n");
-                    pushTrecEvalStr.append(0).append(" ").append("MULTI").append("\n");
+                    pushTrecEvalStr.append(0).append(" ").append("STANDARD").append("\n");
                 }
             }
+
             relFileStr.add(pushStr);
             relFileTrecEvalStr.add(pushTrecEvalStr);
         }
@@ -188,7 +233,7 @@ class LceOpera {
     public ArrayList<Document> documents = new ArrayList<Document>();
     public IndexWriterConfig writerConfig;
     public IndexWriter writer;
-    public int maxResults = 100;
+    public int maxResults = 1400;
     public CharArraySet stopWords;
 
     /**
@@ -221,7 +266,7 @@ class LceOpera {
         // 初始化停顿词
 //        System.out.println(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
         this.stopWords = new CharArraySet(0, true);
-//        this.stopWords.addAll(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+        this.stopWords.addAll(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
         this.stopWords.add("?");
         this.stopWords.add(",");
         this.stopWords.add(".");
@@ -315,6 +360,7 @@ class LceOpera {
 //        this.writerConfig.setSimilarity(new BooleanSimilarity());
 //        this.writerConfig.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new BooleanSimilarity()}));
 //        this.writerConfig.setSimilarity(new MultiSimilarity(new Similarity[]{new BM25Similarity(), new ClassicSimilarity(), new LMDirichletSimilarity()}));
+//        this.writerConfig.setSimilarity(new BooleanSimilarity());
 
         // 设置写入方式
         this.writerConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
