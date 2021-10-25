@@ -32,3 +32,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### lucene ###
+src/main/java/index/
+target/
+!target/corpus/
+!.gitignore
