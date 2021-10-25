@@ -81,17 +81,23 @@ public class XiangMao {
                 long endTime; // = System.currentTimeMillis(); //获取结束时间
 
                 // 设置基础目录
+                System.out.println("---003.001");
                 String baseDir = "/opt/my_assignment_1/info_search_lucene/src/main/java";
 
                 // 获取查询数据
+                System.out.println("---003.002");
                 Queries queries = new Queries(baseDir);
+                System.out.println("---003.003");
                 ArrayList<HashMap<String, String>> scItems = queries.getQry();
 
                 // 创建索引
                 // time
+                System.out.println("---003.004");
                 System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Index being created...");
+                System.out.println("---003.005");
                 startTime = System.currentTimeMillis(); //获取开始时间
 
+                System.out.println("---003.006");
                 LceOpera indexStore = new LceOpera("index", "corpus", "cran.all.1400");
 
                 System.out.println("---004");
