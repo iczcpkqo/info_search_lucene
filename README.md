@@ -36,7 +36,7 @@
 
 * The directory where the file is located:
 
-  > c:\codedomain\workspace\modules\cs7is3-202122_info_search\info_search_lucene\src\main\java\corpus
+  > /opt/my_assignment_1/info_search_lucene/src/main/java/corpus
 
 * File name:
 
