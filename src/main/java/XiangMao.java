@@ -155,7 +155,9 @@ public class XiangMao {
             StringBuilder pushTrecEvalStr = new StringBuilder();
             int rank = 0;
             ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total", trySimilar);
+
 //            ArrayList<HashMap<String, String>> scRelArr = opera.searchBool(q.get("query").split(" "), "total");
+
             for (HashMap<String, String> hit : scRelArr) {
                 rank++;
                 /* *
@@ -415,6 +417,7 @@ class LceOpera {
 
         // 配置计分方法
 //        this.writerConfig.setSimilarity(new TFIDFSimilarity());
+
         this.writerConfig.setSimilarity(new BM25Similarity());
 //        this.writerConfig.setSimilarity(new LMDirichletSimilarity());
 //        this.writerConfig.setSimilarity(new ClassicSimilarity());
@@ -439,6 +442,7 @@ class LceOpera {
         // 结构化所有文章
         ArrayList<Document> documents = new ArrayList<Document>();
         for (HashMap<String, String> articleMap : conMap){
+            System.out.println(articleMap.get("author"));
             Document doc = new Document();
             doc.add(new TextField("id", articleMap.get("id"), Field.Store.YES));
             doc.add(new TextField("title", articleMap.get("title"), Field.Store.YES));
@@ -596,6 +600,7 @@ class LceOpera {
 
 
         ArrayList<HashMap<String, String>> hitsMap = new ArrayList<>();
+
         for (ScoreDoc hit : hits) {
             Document hitDoc = iSearcher.doc(hit.doc);
             HashMap<String, String> relMap = new HashMap<String, String >();
@@ -625,13 +630,17 @@ class LceOpera {
         if(byteArticle == null)
             article = this.content;
 
+
 //        Path path = Paths.get("C:/codedomain/workspace/java/demo/untitled17/src/article.txt");
 //        String content = new String(Files.readAllBytes(path));
 //        String content = ".Isdfsdsdfsdf.Ixxxxxx.Txxxxxxxx";
         // 第一项为数量
-        String[] relBox = article.split(".I [0-9]*\n");
-
+//        String[] relBox = article.split(".I [0-9]*\n");
+//        String[] relBox = article.split(".I [0-9]*\n");
+        String[] relBox = article.split(".I [0-9]*\r\n");
+//        String[] relBox = article.split(".I 2");
 //        System.out.println("Number of Result: " + relBox.length);
+//        System.out.println("===" + relBox[1]);
 
         ArrayList<HashMap<String, String>> corArrMap = new ArrayList<>();
 
@@ -643,7 +652,7 @@ class LceOpera {
             HashMap<String, String> oneArticle = new HashMap<String, String>();
             oneArticle.put("id", String.valueOf(i));
 
-            String[] getTitle = relBox[i].split(".T(?=\n)|.A(?=\n)|.B(?=\n)|.W(?=\n)");
+            String[] getTitle = relBox[i].split(".T(?=\r\n)|.A(?=\r\n)|.B(?=\r\n)|.W(?=\r\n)");
             oneArticle.put("title", getTitle[1].replaceAll("\n|\r",""));
             oneArticle.put("author", getTitle[2].replaceAll("\n|\r", ""));
             oneArticle.put("publish",getTitle[3].replaceAll("\n|\r", ""));
@@ -674,6 +683,7 @@ class LceOpera {
 //        System.out.println("author=" + corArrMap.get(0).get("author"));
 //        System.out.println("publish=" + corArrMap.get(0).get("publish"));
 //        System.out.println("content=" + corArrMap.get(0).get("content"));
+
 
         return corArrMap;
     }

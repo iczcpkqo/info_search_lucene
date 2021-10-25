@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "========================================"
+echo " *                      Name : Xiang Mao"
+echo " *            Student Number :  21332237"
+echo " *                                      "
+echo " -------------------------------------- "
+echo " * Analyzers : STANDARD                 "
+echo " *   Scoring : BM25    ===============  "
+echo " *                     || **BEST**  ||  "
+echo " *   RESULTS :         ===============  "
+echo "                                        "
+echo " map                     all     0.3934 "
+echo " iprec_at_recall_0.00    all     0.7995 "
