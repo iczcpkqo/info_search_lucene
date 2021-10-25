@@ -82,11 +82,12 @@ public class XiangMao {
 
                 // 设置基础目录
                 System.out.println("---003.001");
-                String baseDir = "/opt/my_assignment_1/info_search_lucene/src/main/java";
+                Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
+                Wrench.proBasePath = "/opt/my_assignment_1/info_search_lucene/src/main/java";
 
                 // 获取查询数据
                 System.out.println("---003.002");
-                Queries queries = new Queries(baseDir);
+                Queries queries = new Queries(Wrench.proBasePath);
                 System.out.println("---003.003");
                 ArrayList<HashMap<String, String>> scItems = queries.getQry();
 
@@ -205,15 +206,15 @@ public class XiangMao {
         String dateStr = formatter.format(date);
 
         // 保存trec_eval所需要的文件
-        Wrench.saveNew("", "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/my_record/");
+        Wrench.saveNew("", "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", Wrench.proBasePath + "/my_record/");
         for(StringBuilder s : relFileTrecEvalStr)
-            Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/my_record/");
+            Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", Wrench.proBasePath + "/my_record/");
 
         // 保存到上级目录, 只保存最好记录
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
-            Wrench.saveNew("", "my.record_for_search_results.txt", "src/main/java/");
+            Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath);
             for (StringBuilder s : relFileTrecEvalStr){
-                Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", "src/main/java/");
+                Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
             }
         }
     }
@@ -293,14 +294,14 @@ public class XiangMao {
         String dateStr = formatter.format(date);
 
         // 保存数据进入CSV文件
-        Wrench.saveNew("", "cranqrel.match_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
+        Wrench.saveNew("", "cranqrel.match_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + ".csv",  Wrench.proBasePath + "/qry_match_rel/");
         for(StringBuilder s : relFileStr)
-            Wrench.saveMore(s.toString(), "cranqrel.match_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + ".csv", "src/main/java/qry_match_rel/");
+            Wrench.saveMore(s.toString(), "cranqrel.match_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + ".csv", Wrench.proBasePath + "/qry_match_rel/");
 
         // 保存trec_eval所需要的文件
-        Wrench.saveNew("", "match.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/qry_match_rel/");
+        Wrench.saveNew("", "match.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", Wrench.proBasePath + "/qry_match_rel/");
         for(StringBuilder s : relFileTrecEvalStr)
-            Wrench.saveMore(s.toString(), "match.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/qry_match_rel/");
+            Wrench.saveMore(s.toString(), "match.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", Wrench.proBasePath + "/qry_match_rel/");
 
     }
 }
@@ -332,10 +333,10 @@ class LceOpera {
 //        this.ANALYZER_PICKER.put("standard", new StandardAnalyzer(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET));
 
         // 初始化索引仓库
-        this.indexPath = "src/main/java" + "/index/";
+        this.indexPath = Wrench.proBasePath + "/index/";
 
         // 初始化文档仓库
-        this.corpusPath = "src/main/java" + "/corpus/";
+        this.corpusPath = Wrench.proBasePath + "/corpus/";
         // 文档数据文件名
         this.corName = "cran.all.1400";
     }
@@ -377,10 +378,10 @@ class LceOpera {
 //        System.out.println("------------------------------");
 
         // 初始化索引仓库
-        this.indexPath = "src/main/java" + "/" + indexPath + "/";
+        this.indexPath = Wrench.proBasePath + "/" + indexPath + "/";
 
         // 初始化文档仓库
-        this.corpusPath = "src/main/java" + "/" + corpusPath + "/";
+        this.corpusPath = Wrench.proBasePath + "/" + corpusPath + "/";
         // 文档数据文件名
         this.corName = corpusFileName;
     }
@@ -733,11 +734,11 @@ class Queries {
      * @throws IOException IO
      */
     public Queries() throws IOException {
-        this.cranQry = new String(Files.readAllBytes(Paths.get("src/main/java/corpus/cran.qry")));
-        this.cranqrel = new String(Files.readAllBytes(Paths.get("src/main/java/corpus/cranqrel")));
-        this.TRECeval = new String(Files.readAllBytes(Paths.get("src/main/java/corpus/QRelsCorrectedforTRECeval")));
+        this.cranQry = new String(Files.readAllBytes(Paths.get(Wrench.proBasePath+"/corpus/cran.qry")));
+        this.cranqrel = new String(Files.readAllBytes(Paths.get(Wrench.proBasePath +"/corpus/cranqrel")));
+        this.TRECeval = new String(Files.readAllBytes(Paths.get(Wrench.proBasePath + "/corpus/QRelsCorrectedforTRECeval")));
 
-        this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
+        this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
     }
 
     /**
@@ -755,7 +756,7 @@ class Queries {
         System.out.println("---003.002.004");
 
         System.out.println("---003.002.004:" + this.cranQry);
-        this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
+        this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
         System.out.println("---003.002.005");
     }
 
@@ -771,7 +772,7 @@ class Queries {
         this.cranqrel = new String(Files.readAllBytes(Paths.get(qrel)));
         this.TRECeval = new String(Files.readAllBytes(Paths.get(tre)));
 
-        this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
+        this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
     }
 
     /**
@@ -852,6 +853,8 @@ class Draw {
 
 // Tool
 class Wrench {
+    public static String workPath;
+    public static String proBasePath;
     /**
      * saveNew 写入新内容
      * @param saStr 需要存入的字符串
