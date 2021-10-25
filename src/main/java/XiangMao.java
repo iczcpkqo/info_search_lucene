@@ -754,6 +754,7 @@ class Queries {
         this.TRECeval = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/QRelsCorrectedforTRECeval")));
         System.out.println("---003.002.004");
 
+        System.out.println("---003.002.004:" + this.cranQry);
         this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
         System.out.println("---003.002.005");
     }
@@ -789,16 +790,25 @@ class Queries {
      * @throws IOException IO
      */
     public ArrayList<HashMap<String, String>> txtConvert(String txt, String fileName, String savePath) throws IOException {
+        System.out.println("---003.002.004.001");
         ArrayList<HashMap<String, String>> txtBox = new ArrayList<>();
+        System.out.println("---003.002.004.002");
         String[] txtSplitter = txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n");
 
+        System.out.println("---003.002.004.003");
         Wrench.saveNew("", fileName, savePath);
         for(int i=1; i<txtSplitter.length; i++){
+            System.out.println("---003.002.004.004");
             HashMap<String, String> q = new HashMap<String, String >();
+            System.out.println("---003.002.004.005");
             q.put("id", String.valueOf(i));
+            System.out.println("---003.002.004.006");
             q.put("query", txtSplitter[i].replaceAll("\r", "").replaceAll("[?]", " "));
+            System.out.println("---003.002.004.007");
             txtBox.add(q);
+            System.out.println("---003.002.004.008");
             Wrench.saveMore(".I " + q.get("id") + "\n.W\n" + q.get("query"), fileName, savePath);
+            System.out.println("---003.002.004.009");
         }
 //        System.out.println(txtBox.get(0));
 //        System.out.println(txtBox.get(224));
@@ -807,6 +817,7 @@ class Queries {
 //        Wrench.saveMore("\nsf33434sf", "dsf.txt", "src/main/java/corpus/");
 //        Wrench.saver(, "dsf.txt", "src/main/java/corpus/");
 
+        System.out.println("---003.002.004.010");
         return txtBox;
     }
 
