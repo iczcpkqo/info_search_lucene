@@ -796,7 +796,10 @@ class Queries {
         String[] txtSplitter = txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n");
 
         System.out.println("---003.002.004.003");
+        System.out.println("---003.002.004.003:fileName:" + fileName);
+        System.out.println("---003.002.004.003:savePath:" + savePath);
         Wrench.saveNew("", fileName, savePath);
+        System.out.println("---003.002.004.003.000");
         for(int i=1; i<txtSplitter.length; i++){
             System.out.println("---003.002.004.004");
             HashMap<String, String> q = new HashMap<String, String >();
@@ -857,7 +860,12 @@ class Wrench {
      * @throws IOException IO
      */
     public static void saveNew(String saStr, String fileName, String path) throws IOException {
+        System.out.println("---003.002.004.003.001");
+        System.out.println("---003.002.004.003.001:saStr:");
+        System.out.println("---003.002.004.003.001:FilNmae:");
+        System.out.println("---003.002.004.003.001:Path:");
         save(saStr, fileName, path, "new");
+        System.out.println("---003.002.004.003.002");
     }
 
     /**
@@ -881,18 +889,31 @@ class Wrench {
      * @throws IOException IO
      */
     public static void save(String saStr, String fileName, String path, String type) throws IOException {
+        System.out.println("---003.002.004.003.001.001");
         String file = path + fileName;
+        System.out.println("---003.002.004.003.001.002");
         BufferedWriter writer = null;
+        System.out.println("---003.002.004.003.001.003");
         if(!Files.exists(Paths.get(file)))
             Files.createFile(Paths.get(file));
 
-        if (Objects.equals(type, "new"))
+        System.out.println("---003.002.004.003.001.004");
+        if (Objects.equals(type, "new")) {
+            System.out.println("---003.002.004.003.001.005");
             writer = Files.newBufferedWriter(Paths.get(file), StandardCharsets.UTF_8);
-        else if (Objects.equals(type, "more"))
+            System.out.println("---003.002.004.003.001.006");
+        }
+        else if (Objects.equals(type, "more")) {
+            System.out.println("---003.002.004.003.001.007");
             writer = Files.newBufferedWriter(Paths.get(file), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+            System.out.println("---003.002.004.003.001.008");
+        }
 
+        System.out.println("---003.002.004.003.001.009");
         writer.write(saStr);
+        System.out.println("---003.002.004.003.001.010");
         writer.flush();
+        System.out.println("---003.002.004.003.001.011");
         writer.close();
     }
 
