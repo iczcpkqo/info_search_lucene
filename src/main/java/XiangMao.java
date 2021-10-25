@@ -746,9 +746,13 @@ class Queries {
      * @throws IOException IO
      */
     public Queries(String basePath) throws IOException {
+        System.out.println("---003.002.001");
         this.cranQry = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cran.qry")));
+        System.out.println("---003.002.002");
         this.cranqrel = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cranqrel")));
+        System.out.println("---003.002.003");
         this.TRECeval = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/QRelsCorrectedforTRECeval")));
+        System.out.println("---003.002.004");
 
         this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
     }
