@@ -187,8 +187,9 @@ public class XiangMao {
         // 保存到上级目录, 只保存最好记录
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
             Wrench.saveNew("", "my.record_for_search_results.txt", "src/main/java/");
-            for (StringBuilder s : relFileTrecEvalStr)
+            for (StringBuilder s : relFileTrecEvalStr){
                 Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", "src/main/java/");
+            }
         }
     }
 
