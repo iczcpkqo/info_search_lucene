@@ -907,19 +907,25 @@ class Wrench {
         System.out.println("file is : " + file);
         System.out.println("file path : " + Paths.get(file));
 
-        // test
-//        System.out.println("new test");
-//        try {
+//         test
+        System.out.println("new test");
+        try {
             String fil = "dds.txt";
-//            if(!Files.exists(Paths.get(fil)))
-//                Files.createFile(Paths.get(fil));
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+            String fil2 = "src/main/java/xxs.txt";
+
+            if(!Files.exists(Paths.get(fil)))
+                Files.createFile(Paths.get(fil));
+
+            if(!Files.exists(Paths.get(fil2)))
+                Files.createFile(Paths.get(fil2));
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         // ERROR
-        Files.createFile(Paths.get(fil));
+        Files.createFile(Paths.get(file));
         System.out.println("---003.002.004.003.001.003.004");
         Files.createFile(Paths.get("test.txt"));
 
