@@ -73,6 +73,23 @@ public class XiangMao {
 
         System.out.println("---001");
 
+        System.out.println("new test");
+        try {
+            String fil = "dds.txt";
+            String fil2 = "src/main/java/xxs.txt";
+
+            if(!Files.exists(Paths.get(fil)))
+                Files.createFile(Paths.get(fil));
+
+            if(!Files.exists(Paths.get(fil2)))
+                Files.createFile(Paths.get(fil2));
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+
         for(String tryAnalyzer : analyzerTimes) {
             System.out.println("---002");
             for (String trySimilar: similarTimes) {
@@ -908,21 +925,21 @@ class Wrench {
         System.out.println("file path : " + Paths.get(file));
 
 //         test
-        System.out.println("new test");
-        try {
-            String fil = "dds.txt";
-            String fil2 = "src/main/java/xxs.txt";
-
-            if(!Files.exists(Paths.get(fil)))
-                Files.createFile(Paths.get(fil));
-
-            if(!Files.exists(Paths.get(fil2)))
-                Files.createFile(Paths.get(fil2));
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        System.out.println("new test");
+//        try {
+//            String fil = "dds.txt";
+//            String fil2 = "src/main/java/xxs.txt";
+//
+//            if(!Files.exists(Paths.get(fil)))
+//                Files.createFile(Paths.get(fil));
+//
+//            if(!Files.exists(Paths.get(fil2)))
+//                Files.createFile(Paths.get(fil2));
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         // ERROR
         Files.createFile(Paths.get(file));
