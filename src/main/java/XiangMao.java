@@ -898,6 +898,7 @@ class Wrench {
     public static void getMyPath() throws IOException {
         File directory = new File("");//设定为当前文件夹
 //            System.out.println(directory.getCanonicalPath());//获取标准的路径
-            System.out.println(directory.getAbsolutePath());//获取绝对路径
+//            System.out.println(directory.getAbsolutePath());//获取绝对路径
+            System.out.println("Work Directory:"+System.getProperty("user.dir"));
     }
 }
