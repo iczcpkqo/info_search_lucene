@@ -908,7 +908,7 @@ class Wrench {
         System.out.println("file path : " + Paths.get(file));
 
         System.out.println("test===");
-        String filePath = fileName;
+        String filePath = Wrench.workPath + fileName;
         File ff = new File(filePath);
         if (!ff.getParentFile().exists()) {
             ff.getParentFile().mkdirs();
