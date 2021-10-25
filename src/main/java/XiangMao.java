@@ -755,6 +755,7 @@ class Queries {
         System.out.println("---003.002.004");
 
         this.queries = txtConvert(this.cranQry, "cran.qry.new", "src/main/java/corpus/");
+        System.out.println("---003.002.005");
     }
 
     /**
