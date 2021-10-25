@@ -899,13 +899,9 @@ class Wrench {
             String fil = "out-0046.txt";
             String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/in-0046.txt";
 
-            System.out.println("create test file : out");
-            if(!Files.exists(Paths.get(fil)))
-                Files.createFile(Paths.get(fil));
-
-            System.out.println("create test file : in");
-            if(!Files.exists(Paths.get(fil2)))
-                Files.createFile(Paths.get(fil2));
+            System.out.println("create test file : out by var file");
+            if(!Files.exists(Paths.get(file)))
+                Files.createFile(Paths.get(file));
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -913,7 +909,7 @@ class Wrench {
         }
 
 
-        System.out.println("try test.txt");
+//        System.out.println("try test.txt");
         // ERROR
         System.out.println("just create test.txt");
         Files.createFile(Paths.get("test.txt"));
