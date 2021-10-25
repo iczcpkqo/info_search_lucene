@@ -894,19 +894,19 @@ class Wrench {
 
 
         // try function
-        System.out.println("new test");
-        try {
-            String fil = "out-0046.txt";
-            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/in-0046.txt";
-
-            System.out.println("create test file : out by var file");
-            if(!Files.exists(Paths.get(file)))
-                Files.createFile(Paths.get(file));
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        System.out.println("new test");
+//        try {
+//            String fil = "out-0046.txt";
+//            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/in-0046.txt";
+//
+//            System.out.println("create test file : out by var file");
+//            if(!Files.exists(Paths.get(file)))
+//                Files.createFile(Paths.get(file));
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
 
 //        System.out.println("try test.txt");
