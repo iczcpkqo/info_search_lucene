@@ -899,10 +899,12 @@ class Wrench {
         System.out.println("---003.002.004.003.001.003.002");
         System.out.println(Files.exists(Paths.get(file)));
         System.out.println("---003.002.004.003.001.003.003");
+        System.out.println("file is : " + file);
+        System.out.println("file path : " + Paths.get(file));
         Files.createFile(Paths.get(file));
         System.out.println("---003.002.004.003.001.003.004");
         Files.createFile(Paths.get("./test.txt"));
-        
+
         if(!Files.exists(Paths.get(file)))
             Files.createFile(Paths.get(file));
 
