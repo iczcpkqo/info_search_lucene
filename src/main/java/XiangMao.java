@@ -51,6 +51,16 @@ public class XiangMao {
 //        String[] aa = {"incompressible", "necessary", "compressible"};
 //        ArrayList<HashMap<String, String>> tt =  indexStore.searchBool(aa, "content");
 
+        System.out.println("new test");
+        try {
+            String fil = "ads.txt";
+            if(!Files.exists(Paths.get(fil)))
+                Files.createFile(Paths.get(fil));
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         Wrench.getMyPath();
 /**
  *
@@ -909,44 +919,36 @@ class Wrench {
 
 
 
-
-
+        // test
         System.out.println("new test");
         try {
-            File fil = new File("test/pp/tt/asd.txt");
-            File parent = fil.getParentFile();
-            if(parent!=null&&!parent.exists()){
-                parent.mkdirs();
-            }
-            fil.createNewFile();
+            String fil = "ads.txt";
+            if(!Files.exists(Paths.get(fil)))
+                Files.createFile(Paths.get(fil));
         } catch (Exception e) {
-        // TODO Auto-generated catch block
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
 
-
-
-
-
-
-
-        System.out.println("test===");
-        String filePath = Wrench.workPath + fileName;
-        File ff = new File(filePath);
-        if (!ff.getParentFile().exists()) {
-            ff.getParentFile().mkdirs();
-        }
-        if(!ff.exists()) {
-            ff.createNewFile();
-        }
+//        System.out.println("new test");
+//        System.out.println("test===");
+//        try {
+//            File fil = new File("test/pp/tt/asd.txt");
+//            File parent = fil.getParentFile();
+//            if(parent!=null&&!parent.exists()){
+//                parent.mkdirs();
+//            }
+//            fil.createNewFile();
+//        } catch (Exception e) {
+//        // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         // ERROR
         Files.createFile(Paths.get(file));
         System.out.println("---003.002.004.003.001.003.004");
         Files.createFile(Paths.get("test.txt"));
-
-
 
         if(!Files.exists(Paths.get(file)))
             Files.createFile(Paths.get(file));
@@ -1012,5 +1014,19 @@ class Wrench {
 //            System.out.println(directory.getCanonicalPath());//获取标准的路径
 //            System.out.println(directory.getAbsolutePath());//获取绝对路径
             System.out.println("Work Directory:"+System.getProperty("user.dir"));
+    }
+
+    // test
+    public static void strTest(){
+
+        System.out.println("new test");
+        try {
+            String fil = "ads.txt";
+        if(!Files.exists(Paths.get(fil)))
+            Files.createFile(Paths.get(fil));
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
