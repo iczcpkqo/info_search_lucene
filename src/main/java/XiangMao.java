@@ -82,8 +82,10 @@ public class XiangMao {
 
                 // 设置基础目录
                 System.out.println("---003.001");
+//                Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
+//                Wrench.proBasePath = "/opt/my_assignment_1/info_search_lucene/src/main/java";
                 Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
-                Wrench.proBasePath = "/opt/my_assignment_1/info_search_lucene/src/main/java";
+                Wrench.proBasePath = "./";
 
                 // 获取查询数据
                 System.out.println("---003.002");
