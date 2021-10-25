@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.StopwordAnalyzerBase;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Term;
@@ -38,12 +37,10 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.util.Version;
 
 
 public class XiangMao {
@@ -65,9 +62,11 @@ public class XiangMao {
 
  */
 
-        String[] analyzerTimes = {"standard", "standard_with_stop_words", "simple"};
-        String[] similarTimes = {"bm25", "classic", "lmd", "bool", "mul"};
+//        String[] analyzerTimes = {"standard", "standard_with_stop_words", "simple"};
+//        String[] similarTimes = {"bm25", "classic", "lmd", "bool", "mul"};
 
+        String[] analyzerTimes = {"standard"};
+        String[] similarTimes = {"bm25"};
 
         for(String tryAnalyzer : analyzerTimes) {
             for (String trySimilar: similarTimes) {
@@ -83,7 +82,7 @@ public class XiangMao {
 
                 // 创建索引
                 // time
-                System.out.println("Index being created...");
+                System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Index being created...");
                 startTime = System.currentTimeMillis(); //获取开始时间
 
                 LceOpera indexStore = new LceOpera("index", "corpus", "cran.all.1400");
@@ -103,7 +102,7 @@ public class XiangMao {
 
                 // time
                 endTime = System.currentTimeMillis(); //获取结束时间
-                System.out.println("Index creation completed, time consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+                System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Index creation completed, time consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
 
                 //        indexStore.setUpStandardIndexWithStopWords();
                 //        indexStore.setUpSimpleIndex();
@@ -119,7 +118,7 @@ public class XiangMao {
                 //        System.out.println("====================");
 
                 // time
-                System.out.println("Start your search...");
+                System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Start your search...");
                 startTime = System.currentTimeMillis(); //获取开始时间
 
 //                ArrayList<HashMap<String, String>> tt = indexStore.searchPar(new String[]{scItems.get(0).get("query")}, "content");
@@ -133,17 +132,17 @@ public class XiangMao {
 
                 // time
                 endTime = System.currentTimeMillis(); //获取结束时间
-                System.out.println("Search completed, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+                System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Search completed, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
 
                 // time
-                System.out.println("Search results are being saved...");
+                System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Search results are being saved...");
                 startTime = System.currentTimeMillis(); //获取开始时间
 
                 getRelForTrecEval(queries.getQry(), indexStore, tryAnalyzer, trySimilar);
 
                 // time
                 endTime = System.currentTimeMillis(); //获取结束时间
-                System.out.println("Search results have been saved, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
+                System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Search results have been saved, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
             }
         }
     }
@@ -185,6 +184,12 @@ public class XiangMao {
         for(StringBuilder s : relFileTrecEvalStr)
             Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", "src/main/java/my_record/");
 
+        // 保存到上级目录, 只保存最好记录
+        if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
+            Wrench.saveNew("", "my.record_for_search_results.txt", "src/main/java/");
+            for (StringBuilder s : relFileTrecEvalStr)
+                Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", "src/main/java/");
+        }
     }
 
 
