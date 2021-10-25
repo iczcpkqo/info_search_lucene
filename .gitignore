@@ -1,5 +1,9 @@
 HELP.md
-target/
+!/target
+/target/*
+!/target/corpus
+
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -35,5 +39,3 @@ build/
 
 ### lucene ###
 src/main/java/index/
-!target/corpus/
-!.gitignore
