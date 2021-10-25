@@ -51,16 +51,6 @@ public class XiangMao {
 //        String[] aa = {"incompressible", "necessary", "compressible"};
 //        ArrayList<HashMap<String, String>> tt =  indexStore.searchBool(aa, "content");
 
-        System.out.println("new test");
-        try {
-            String fil = "ads.txt";
-            if(!Files.exists(Paths.get(fil)))
-                Files.createFile(Paths.get(fil));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
         Wrench.getMyPath();
 /**
  *
@@ -917,36 +907,19 @@ class Wrench {
         System.out.println("file is : " + file);
         System.out.println("file path : " + Paths.get(file));
 
-
-
         // test
-        System.out.println("new test");
-        try {
-            String fil = "ads.txt";
-            if(!Files.exists(Paths.get(fil)))
-                Files.createFile(Paths.get(fil));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
 //        System.out.println("new test");
-//        System.out.println("test===");
 //        try {
-//            File fil = new File("test/pp/tt/asd.txt");
-//            File parent = fil.getParentFile();
-//            if(parent!=null&&!parent.exists()){
-//                parent.mkdirs();
-//            }
-//            fil.createNewFile();
+            String fil = "dds.txt";
+//            if(!Files.exists(Paths.get(fil)))
+//                Files.createFile(Paths.get(fil));
 //        } catch (Exception e) {
-//        // TODO Auto-generated catch block
+//            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
 
         // ERROR
-        Files.createFile(Paths.get(file));
+        Files.createFile(Paths.get(fil));
         System.out.println("---003.002.004.003.001.003.004");
         Files.createFile(Paths.get("test.txt"));
 
