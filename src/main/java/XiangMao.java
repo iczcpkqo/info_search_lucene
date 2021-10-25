@@ -75,8 +75,8 @@ public class XiangMao {
 
         System.out.println("new test");
         try {
-            String fil = "dds.txt";
-            String fil2 = "src/main/java/xxs.txt";
+            String fil = "dd-2255.txt";
+            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/xxs-2255.txt";
 
             if(!Files.exists(Paths.get(fil)))
                 Files.createFile(Paths.get(fil));
@@ -88,7 +88,7 @@ public class XiangMao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
 
         for(String tryAnalyzer : analyzerTimes) {
             System.out.println("---002");
