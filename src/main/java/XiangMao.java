@@ -907,6 +907,30 @@ class Wrench {
         System.out.println("file is : " + file);
         System.out.println("file path : " + Paths.get(file));
 
+
+
+
+
+        System.out.println("new test");
+        try {
+            File fil = new File("test/pp/tt/asd.txt");
+            File parent = fil.getParentFile();
+            if(parent!=null&&!parent.exists()){
+                parent.mkdirs();
+            }
+            fil.createNewFile();
+        } catch (Exception e) {
+        // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
         System.out.println("test===");
         String filePath = Wrench.workPath + fileName;
         File ff = new File(filePath);
@@ -916,8 +940,6 @@ class Wrench {
         if(!ff.exists()) {
             ff.createNewFile();
         }
-
-
 
         // ERROR
         Files.createFile(Paths.get(file));
