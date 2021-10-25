@@ -73,21 +73,21 @@ public class XiangMao {
 
         System.out.println("---001");
 
-        System.out.println("new test");
-        try {
-            String fil = "dd-2255.txt";
-            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/xxs-2255.txt";
-
-            if(!Files.exists(Paths.get(fil)))
-                Files.createFile(Paths.get(fil));
-
-            if(!Files.exists(Paths.get(fil2)))
-                Files.createFile(Paths.get(fil2));
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        System.out.println("new test");
+//        try {
+//            String fil = "dd-2255.txt";
+//            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/xxs-2255.txt";
+//
+//            if(!Files.exists(Paths.get(fil)))
+//                Files.createFile(Paths.get(fil));
+//
+//            if(!Files.exists(Paths.get(fil2)))
+//                Files.createFile(Paths.get(fil2));
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
 
         for(String tryAnalyzer : analyzerTimes) {
@@ -102,7 +102,7 @@ public class XiangMao {
 //                Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
 //                Wrench.proBasePath = "/opt/my_assignment_1/info_search_lucene/src/main/java";
                 Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
-                Wrench.proBasePath = "";
+                Wrench.proBasePath = "/opt/my_assignment_1/info_search_lucene/src/main/java";
 
                 // 获取查询数据
                 System.out.println("---003.002");
