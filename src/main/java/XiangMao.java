@@ -894,6 +894,15 @@ class Wrench {
         System.out.println("---003.002.004.003.001.002");
         BufferedWriter writer = null;
         System.out.println("---003.002.004.003.001.003");
+        System.out.println("---003.002.004.003.001.003.001");
+        System.out.println(Paths.get(file));
+        System.out.println("---003.002.004.003.001.003.002");
+        System.out.println(Files.exists(Paths.get(file)));
+        System.out.println("---003.002.004.003.001.003.003");
+        Files.createFile(Paths.get(file));
+        System.out.println("---003.002.004.003.001.003.004");
+        Files.createFile(Paths.get("./test.txt"));
+        
         if(!Files.exists(Paths.get(file)))
             Files.createFile(Paths.get(file));
 
