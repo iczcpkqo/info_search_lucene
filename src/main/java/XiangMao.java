@@ -76,7 +76,7 @@ public class XiangMao {
                 long endTime; // = System.currentTimeMillis(); //获取结束时间
 
                 // 设置基础目录
-                String baseDir = "src/main/java";
+                String baseDir = "/opt/my_assignment_1/info_search_lucene/src/main/java";
 
                 // 获取查询数据
                 Queries queries = new Queries(baseDir);
