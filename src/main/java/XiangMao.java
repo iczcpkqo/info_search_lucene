@@ -910,6 +910,18 @@ class Wrench {
         System.out.println("---003.002.004.003.001.003.004");
         Files.createFile(Paths.get("test.txt"));
 
+
+        String filePath = fileName;
+        File ff = new File(filePath);
+        if (!ff.getParentFile().exists()) {
+            ff.getParentFile().mkdirs();
+        }
+        if(!ff.exists()) {
+            ff.createNewFile();
+        }
+
+
+
         if(!Files.exists(Paths.get(file)))
             Files.createFile(Paths.get(file));
 
