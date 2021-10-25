@@ -67,11 +67,16 @@ public class XiangMao {
 //        String[] analyzerTimes = {"standard", "standard_with_stop_words", "simple"};
 //        String[] similarTimes = {"bm25", "classic", "lmd", "bool", "mul"};
 
+
         String[] analyzerTimes = {"standard"};
         String[] similarTimes = {"bm25"};
 
+        System.out.println("---001");
+
         for(String tryAnalyzer : analyzerTimes) {
+            System.out.println("---002");
             for (String trySimilar: similarTimes) {
+                System.out.println("---003");
                 long startTime; // = System.currentTimeMillis(); //获取开始时间
                 long endTime; // = System.currentTimeMillis(); //获取结束时间
 
@@ -89,6 +94,7 @@ public class XiangMao {
 
                 LceOpera indexStore = new LceOpera("index", "corpus", "cran.all.1400");
 
+                System.out.println("---004");
                 switch (tryAnalyzer) {
                     case "standard_with_stop_words":
                         indexStore.setUpStandardIndexWithStopWords();
@@ -97,11 +103,13 @@ public class XiangMao {
                         indexStore.setUpSimpleIndex();
                         break;
                     default:
+                        System.out.println("---005");
                         indexStore.setUpStandardIndex();
                         break;
                 }
 
 
+                System.out.println("---006");
                 // time
                 endTime = System.currentTimeMillis(); //获取结束时间
                 System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Index creation completed, time consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
@@ -109,6 +117,7 @@ public class XiangMao {
                 //        indexStore.setUpStandardIndexWithStopWords();
                 //        indexStore.setUpSimpleIndex();
 
+                System.out.println("---007");
 
                 /* * */
                 queries.getQueriesRelMap(queries.cranqrel);
@@ -119,6 +128,7 @@ public class XiangMao {
                 //        System.out.println(scItems.get(0).get("query"));
                 //        System.out.println("====================");
 
+                System.out.println("---008");
                 // time
                 System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Start your search...");
                 startTime = System.currentTimeMillis(); //获取开始时间
@@ -130,18 +140,23 @@ public class XiangMao {
                 //        for(HashMap<String, String> sd : tt)
                 //            System.out.println(sd.get("id") + " | " + sd.get("author") + " | " + sd.get("score"));
 
+                System.out.println("---009");
                 getFileMatchQryRel(queries.getQry(), queries.getQueriesRelMap(queries.cranqrel), indexStore, tryAnalyzer, trySimilar);
 
                 // time
+                System.out.println("---010");
                 endTime = System.currentTimeMillis(); //获取结束时间
                 System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Search completed, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
 
                 // time
+                System.out.println("---011");
                 System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Search results are being saved...");
                 startTime = System.currentTimeMillis(); //获取开始时间
 
+                System.out.println("---012");
                 getRelForTrecEval(queries.getQry(), indexStore, tryAnalyzer, trySimilar);
 
+                System.out.println("---013");
                 // time
                 endTime = System.currentTimeMillis(); //获取结束时间
                 System.out.println("["+ tryAnalyzer +","+ trySimilar + "] Search results have been saved, time-consuming:" + (endTime - startTime) + "ms"); //输出程序运行时间
