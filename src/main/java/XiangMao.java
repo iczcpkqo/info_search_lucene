@@ -85,7 +85,7 @@ public class XiangMao {
 //                Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
 //                Wrench.proBasePath = "/opt/my_assignment_1/info_search_lucene/src/main/java";
                 Wrench.workPath = "/opt/my_assignment_1/info_search_lucene/";
-                Wrench.proBasePath = "./";
+                Wrench.proBasePath = "";
 
                 // 获取查询数据
                 System.out.println("---003.002");
