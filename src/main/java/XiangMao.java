@@ -16,6 +16,7 @@
 //       -[x]  12. evil评价器
 //       -[x]  13. UX
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -50,6 +51,7 @@ public class XiangMao {
 //        String[] aa = {"incompressible", "necessary", "compressible"};
 //        ArrayList<HashMap<String, String>> tt =  indexStore.searchBool(aa, "content");
 
+        Wrench.getMyPath();
 /**
  *
  *      String baseDir = "src/main/java";
@@ -442,7 +444,7 @@ class LceOpera {
         // 结构化所有文章
         ArrayList<Document> documents = new ArrayList<Document>();
         for (HashMap<String, String> articleMap : conMap){
-            System.out.println(articleMap.get("author"));
+//            System.out.println(articleMap.get("author"));
             Document doc = new Document();
             doc.add(new TextField("id", articleMap.get("id"), Field.Store.YES));
             doc.add(new TextField("title", articleMap.get("title"), Field.Store.YES));
@@ -891,5 +893,11 @@ class Wrench {
             conToHash.put(Integer.valueOf(hs.get("id")), hs);
         }
         return conToHash;
+    }
+
+    public static void getMyPath() throws IOException {
+        File directory = new File("");//设定为当前文件夹
+//            System.out.println(directory.getCanonicalPath());//获取标准的路径
+            System.out.println(directory.getAbsolutePath());//获取绝对路径
     }
 }
