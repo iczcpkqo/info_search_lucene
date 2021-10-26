@@ -818,6 +818,7 @@ class Queries {
         ArrayList<HashMap<String, String>> txtBox = new ArrayList<>();
         String[] txtSplitter = txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n");
         System.out.println("===---002.001");
+        System.out.println("After split Big TXT is : " + txt);
         System.out.println("After split []size is : " + txtSplitter.length);
 
         Wrench.saveNew("", fileName, savePath);
