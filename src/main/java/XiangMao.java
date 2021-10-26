@@ -870,10 +870,10 @@ class Wrench {
     public static void save(String saStr, String fileName, String path, String type) throws IOException {
         String file = path + fileName;
         BufferedWriter writer = null;
-        System.out.println(Paths.get(file));
-        System.out.println(Files.exists(Paths.get(file)));
-        System.out.println("file is : " + file);
-        System.out.println("file path : " + Paths.get(file));
+//        System.out.println(Paths.get(file));
+//        System.out.println(Files.exists(Paths.get(file)));
+//        System.out.println("file is : " + file);
+//        System.out.println("file path : " + Paths.get(file));
 
 //         test
 //        System.out.println("new test");
@@ -898,11 +898,11 @@ class Wrench {
 
 
 
-        String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
+//        String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
 
-        System.out.println("fil2 file");
-        if(!Files.exists(Paths.get(fil2)))
-            Files.createFile(Paths.get(fil2));
+//        System.out.println("fil2 file");
+//        if(!Files.exists(Paths.get(fil2)))
+//            Files.createFile(Paths.get(fil2));
 
         // try function
 //        System.out.println("new test");
@@ -950,7 +950,7 @@ class Wrench {
 //
 //        System.out.println("try create without TRY");
 //        Files.createFile(Paths.get(file));
-        System.out.println("SUCCESSFUL");
+//        System.out.println("SUCCESSFUL");
 
         if(!Files.exists(Paths.get(file)))
             Files.createFile(Paths.get(file));
