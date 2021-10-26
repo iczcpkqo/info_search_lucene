@@ -694,7 +694,8 @@ class LceOpera {
         // 第一项为数量
 //        String[] relBox = article.split(".I [0-9]*\n");
 //        String[] relBox = article.split(".I [0-9]*\n");
-        String[] relBox = article.split(".I [0-9]*\r\n");
+//        String[] relBox = article.split(".I [0-9]*\r\n");
+        String[] relBox = article.split(".I [0-9]\\n");
 //        String[] relBox = article.split(".I 2");
         System.out.println("Number of Result: " + relBox.length);
         System.out.println("===" + relBox[0]);
@@ -709,10 +710,10 @@ class LceOpera {
             HashMap<String, String> oneArticle = new HashMap<String, String>();
             oneArticle.put("id", String.valueOf(i));
 
-            String[] getTitle = relBox[i].split(".T(?=\r\n)|.A(?=\r\n)|.B(?=\r\n)|.W(?=\r\n)");
-            oneArticle.put("title", getTitle[1].replaceAll("\n|\r",""));
-            oneArticle.put("author", getTitle[2].replaceAll("\n|\r", ""));
-            oneArticle.put("publish",getTitle[3].replaceAll("\n|\r", ""));
+            String[] getTitle = relBox[i].split(".T(?=\\n)|.A(?=\\n)|.B(?=\\n)|.W(?=\\n)");
+            oneArticle.put("title", getTitle[1].replaceAll("\\n|\\r",""));
+            oneArticle.put("author", getTitle[2].replaceAll("\\n|\\r", ""));
+            oneArticle.put("publish",getTitle[3].replaceAll("\\n|\\r", ""));
 
             StringBuilder conTail = new StringBuilder();
             for (int j=4; j<getTitle.length; j++)
