@@ -896,7 +896,7 @@ class Wrench {
         // try function
         System.out.println("new test");
         try {
-            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new.txt";
+            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
 
             System.out.println("fil2 file");
             if(!Files.exists(Paths.get(fil2)))
