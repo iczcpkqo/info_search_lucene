@@ -64,12 +64,12 @@ public class XiangMao {
 
  */
 
-//        String[] analyzerTimes = {"standard", "standard_with_stop_words", "simple"};
-//        String[] similarTimes = {"bm25", "classic", "lmd", "bool", "mul"};
+        String[] analyzerTimes = {"standard", "standard_with_stop_words", "simple"};
+        String[] similarTimes = {"bm25", "classic", "lmd", "bool", "mul"};
 
 
-        String[] analyzerTimes = {"standard"};
-        String[] similarTimes = {"bm25"};
+//        String[] analyzerTimes = {"standard"};
+//        String[] similarTimes = {"bm25"};
 
 
 //        System.out.println("new test");
