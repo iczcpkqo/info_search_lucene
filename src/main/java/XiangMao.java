@@ -911,9 +911,18 @@ class Wrench {
 
 //        System.out.println("try test.txt");
         // ERROR
-        System.out.println("just create test.txt");
-        Files.createFile(Paths.get("test.txt"));
-        System.out.println("try create by file");
+        System.out.println("get in try");
+        try {
+            Files.createFile(Paths.get(file));
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("Through Try");
+
+
+
+        System.out.println("try create without TRY");
         Files.createFile(Paths.get(file));
         System.out.println("SUCCESSFUL");
 
