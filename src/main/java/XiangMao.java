@@ -191,6 +191,8 @@ public class XiangMao {
             System.out.println("---007");
             for (HashMap<String, String> hit : scRelArr) {
                 System.out.println("---008");
+                System.out.println("=== About the q keyset: " + q.keySet().toString());
+                System.out.println("=== About the hit keyset: " + hit.keySet().toString());
                 rank++;
                 /* *
                  *  查询id: q.get("id")
@@ -209,6 +211,7 @@ public class XiangMao {
                 System.out.println("---009");
             }
             System.out.println("---010");
+            System.out.println(pushTrecEvalStr.toString());
             relFileTrecEvalStr.add(pushTrecEvalStr);
         }
         Date date = new Date();
