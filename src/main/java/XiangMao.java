@@ -177,7 +177,6 @@ public class XiangMao {
         ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
 
         System.out.println("---002");
-        System.out.println(query.size());
         for (HashMap<String, String> q : query) {
             System.out.println("---003");
             StringBuilder pushTrecEvalStr = new StringBuilder();
@@ -790,7 +789,10 @@ class Queries {
         this.cranqrel = new String(Files.readAllBytes(Paths.get(qrel)));
         this.TRECeval = new String(Files.readAllBytes(Paths.get(tre)));
 
+        System.out.println("=== Before save queries, this.cranQry is: " + this.cranQry);
+        System.out.println("=== Before save queries, Wrench.proBasePath is: " + Wrench.proBasePath);
         this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
+        System.out.println("=== After save queries, this.queries is: " + this.queries);
     }
 
     /**
