@@ -770,11 +770,15 @@ class Queries {
      * @throws IOException IO
      */
     public Queries(String basePath) throws IOException {
-        this.cranQry = new String(Files.readAllBytes(Paths.get(Wrench.proBasePath + "/corpus/cran.qry")));
-        this.cranqrel = new String(Files.readAllBytes(Paths.get(Wrench.proBasePath + "/corpus/cranqrel")));
-        this.TRECeval = new String(Files.readAllBytes(Paths.get(Wrench.proBasePath + "/corpus/QRelsCorrectedforTRECeval")));
+        this.cranQry = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cran.qry")));
+        this.cranqrel = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cranqrel")));
+        this.TRECeval = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/QRelsCorrectedforTRECeval")));
 
+        System.out.println("=== Before save queries, basePath is: " + basePath);
+        System.out.println("=== Before save queries, this.cranQry is: " + this.cranQry);
+        System.out.println("=== Before save queries, Wrench.proBasePath is: " + Wrench.proBasePath);
         this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
+        System.out.println("=== After save queries, this.queries is: " + this.queries);
     }
 
     /**
