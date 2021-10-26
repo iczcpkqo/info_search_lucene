@@ -223,10 +223,12 @@ public class XiangMao {
 
         // 保存到上级目录, 只保存最好记录
         System.out.println("==== this is if ====");
+        System.out.println("===== relFsize  " + relFileTrecEvalStr.size());
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
             System.out.println("==== this is IN if  ====");
             Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath);
             for (StringBuilder s : relFileTrecEvalStr){
+
                 Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
             }
         }
