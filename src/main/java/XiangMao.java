@@ -699,6 +699,26 @@ class LceOpera {
 //        String[] relBox = article.split(".I 2");
         System.out.println("Number of Result: " + relBox.length);
         System.out.println("===" + relBox[1]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[2]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[3]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[4]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[5]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[6]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[7]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[8]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[9]);
+        System.out.println("=======================");
+        System.out.println("===" + relBox[10]);
+        System.out.println("=======================");
+
 
         ArrayList<HashMap<String, String>> corArrMap = new ArrayList<>();
 
