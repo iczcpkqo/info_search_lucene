@@ -226,10 +226,10 @@ public class XiangMao {
         System.out.println("===== relFsize  " + relFileTrecEvalStr.size());
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
             System.out.println("==== this is IN if  ====");
-            Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath);
+            Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath + "/");
             for (StringBuilder s : relFileTrecEvalStr){
 
-                Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
+                Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath + "/");
             }
         }
     }
