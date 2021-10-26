@@ -235,6 +235,7 @@ public class XiangMao {
             System.out.println("---018");
             for (StringBuilder s : relFileTrecEvalStr){
                 System.out.println("---019");
+                System.out.println(s.toString());
                 Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
             }
             System.out.println("---020");
@@ -846,10 +847,7 @@ class Queries {
 
         Wrench.saveNew("", fileName, savePath);
         for(int i=1; i<txtSplitter.length; i++){
-            System.out.println("===---002.002");
             System.out.println(txtSplitter[i]);
-            System.out.println("===---002.003");
-
             HashMap<String, String> q = new HashMap<String, String >();
             q.put("id", String.valueOf(i));
             q.put("query", txtSplitter[i].replaceAll("\r", "").replaceAll("[?]", " "));
