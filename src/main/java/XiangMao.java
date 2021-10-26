@@ -178,14 +178,13 @@ public class XiangMao {
 
         System.out.println("---002");
         for (HashMap<String, String> q : query) {
-            System.out.println("---003");
             StringBuilder pushTrecEvalStr = new StringBuilder();
             int rank = 0;
             ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total", trySimilar);
 
 //            ArrayList<HashMap<String, String>> scRelArr = opera.searchBool(q.get("query").split(" "), "total");
+            System.out.println("=== About the Search Results is: " + scRelArr.size());
 
-            System.out.println("---007");
             for (HashMap<String, String> hit : scRelArr) {
                 System.out.println("---008");
                 System.out.println("=== About the q keyset: " + q.keySet().toString());
@@ -205,7 +204,6 @@ public class XiangMao {
                         append(rank).append(" ").
                         append(hit.get("score")).append(" ").
                         append("STANDARD").append("\n");
-                System.out.println("---009");
             }
             System.out.println(pushTrecEvalStr.toString());
             relFileTrecEvalStr.add(pushTrecEvalStr);
@@ -837,7 +835,6 @@ class Queries {
 
         Wrench.saveNew("", fileName, savePath);
         for(int i=1; i<txtSplitter.length; i++){
-//            System.out.println(txtSplitter[i]);
             HashMap<String, String> q = new HashMap<String, String >();
             q.put("id", String.valueOf(i));
             q.put("query", txtSplitter[i].replaceAll("\r", "").replaceAll("[?]", " "));
