@@ -567,7 +567,8 @@ class LceOpera {
     public <E> ArrayList<HashMap<String, String>> search(E[] sc, String scField, String type, String similar, int maxResults) throws IOException, ParseException {
 
 
-        System.out.println("in search sc is:" + sc.length);
+        System.out.println("in search sc is:" + sc);
+        System.out.println("in search sc.length is:" + sc.length);
         System.out.println("in search sc is:" + scField.toString());
         System.out.println("in search sc is:" + type.toString());
         System.out.println("in search sc is:" + similar.toString());
