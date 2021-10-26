@@ -697,7 +697,7 @@ class LceOpera {
         String[] relBox = article.split(".I [0-9]*\r\n");
 //        String[] relBox = article.split(".I 2");
         System.out.println("Number of Result: " + relBox.length);
-        System.out.println("===" + relBox[1]);
+        System.out.println("===" + relBox[0]);
 
         ArrayList<HashMap<String, String>> corArrMap = new ArrayList<>();
 
