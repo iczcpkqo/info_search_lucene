@@ -177,19 +177,19 @@ public class XiangMao {
         System.out.println("---001");
         ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
 
-        System.out.println("---002");
+//        System.out.println("---002");
         for (HashMap<String, String> q : query) {
             StringBuilder pushTrecEvalStr = new StringBuilder();
             int rank = 0;
             ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total", trySimilar);
 
 //            ArrayList<HashMap<String, String>> scRelArr = opera.searchBool(q.get("query").split(" "), "total");
-            System.out.println("=== About the Search Results is: " + scRelArr.size());
+//            System.out.println("=== About the Search Results is: " + scRelArr.size());
 
             for (HashMap<String, String> hit : scRelArr) {
-                System.out.println("---008");
-                System.out.println("=== About the q keyset: " + q.keySet().toString());
-                System.out.println("=== About the hit keyset: " + hit.keySet().toString());
+//                System.out.println("---008");
+//                System.out.println("=== About the q keyset: " + q.keySet().toString());
+//                System.out.println("=== About the hit keyset: " + hit.keySet().toString());
                 rank++;
                 /* *
                  *  查询id: q.get("id")
@@ -206,7 +206,7 @@ public class XiangMao {
                         append(hit.get("score")).append(" ").
                         append("STANDARD").append("\n");
             }
-            System.out.println(pushTrecEvalStr.toString());
+//            System.out.println(pushTrecEvalStr.toString());
             relFileTrecEvalStr.add(pushTrecEvalStr);
         }
         Date date = new Date();
@@ -219,7 +219,7 @@ public class XiangMao {
             Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar + "_" + dateStr + "", Wrench.proBasePath + "/my_record/");
         }
 
-        System.out.println("---016");
+//        System.out.println("---016");
 
         // 保存到上级目录, 只保存最好记录
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
