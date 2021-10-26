@@ -909,11 +909,17 @@ class Wrench {
 //        }
 
 
-//        System.out.println("try test.txt");
         // ERROR
         System.out.println("get in try");
         try {
-            Files.createFile(Paths.get(file));
+            System.out.println("first tryyes.txt");
+            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
+            System.out.println("Second no dot new.txt");
+            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cranqrynew.txt"));
+            System.out.println("Second no dot new.txt");
+            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cran.qry.new.txt"));
+            System.out.println("4 .new");
+            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cran.qry.new"));
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
