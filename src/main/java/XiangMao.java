@@ -119,6 +119,7 @@ public class XiangMao {
                         indexStore.setUpSimpleIndex();
                         break;
                     default:
+                        System.out.println("=== Star Index ===");
                         indexStore.setUpStandardIndex();
                         break;
                 }
@@ -429,6 +430,10 @@ class LceOpera {
      * @throws IOException IO
      */
     public void createIndex(String indexPath, String conPath, String analyzerName, String textSplitModel) throws IOException {
+        System.out.println("in Create Index indexPath is: " + indexPath);
+        System.out.println("in Create Index indexPath is: " + conPath);
+        System.out.println("in Create Index indexPath is: " + analyzerName);
+        System.out.println("in Create Index indexPath is: " + textSplitModel);
 
         // 接收要求
         this.indexPath = indexPath;
@@ -472,6 +477,9 @@ class LceOpera {
             conMap = washArticle(this.content);
         else
             conMap = washArticle(this.content);
+
+        System.out.println("=== HOW ABOUT |conMap| ===");
+        System.out.println(conMap.size());
 
         // 结构化所有文章
         ArrayList<Document> documents = new ArrayList<Document>();
@@ -567,12 +575,12 @@ class LceOpera {
     public <E> ArrayList<HashMap<String, String>> search(E[] sc, String scField, String type, String similar, int maxResults) throws IOException, ParseException {
 
 
-        System.out.println("in search sc is: " + sc[0]);
-        System.out.println("in search sc.length is: " + sc.length);
-        System.out.println("in search scField is: " + scField.toString());
-        System.out.println("in search type is: " + type.toString());
-        System.out.println("in search similar is: " + similar.toString());
-        System.out.println("in search max is: " + maxResults);
+//        System.out.println("in search sc is: " + sc[0]);
+//        System.out.println("in search sc.length is: " + sc.length);
+//        System.out.println("in search scField is: " + scField.toString());
+//        System.out.println("in search type is: " + type.toString());
+//        System.out.println("in search similar is: " + similar.toString());
+//        System.out.println("in search max is: " + maxResults);
 
 
 
@@ -630,11 +638,11 @@ class LceOpera {
         }
 
 
-        System.out.println("=== Before do Search ===");
+//        System.out.println("=== Before do Search ===");
         ScoreDoc[] hits = iSearcher.search(query, maxResults).scoreDocs;
-        System.out.println("=== Aefore do Search ===");
-        System.out.println("number of hits[]" + hits.length);
-        
+//        System.out.println("=== Aefore do Search ===");
+//        System.out.println("number of hits[]" + hits.length);
+
 
 //        System.out.println(hits.length);
 
