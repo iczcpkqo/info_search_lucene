@@ -173,16 +173,24 @@ public class XiangMao {
 
 
     public static void  getRelForTrecEval(ArrayList<HashMap<String, String>> query, LceOpera opera, String tryAnalyzer, String trySimilar) throws IOException, ParseException {
+        System.out.println("---001");
         ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
 
+        System.out.println("---002");
         for (HashMap<String, String> q : query) {
+            System.out.println("---003");
             StringBuilder pushTrecEvalStr = new StringBuilder();
+            System.out.println("---004");
             int rank = 0;
+            System.out.println("---005");
             ArrayList<HashMap<String, String>> scRelArr = opera.searchPar(new String[]{q.get("query")}, "total", trySimilar);
+            System.out.println("---006");
 
 //            ArrayList<HashMap<String, String>> scRelArr = opera.searchBool(q.get("query").split(" "), "total");
 
+            System.out.println("---007");
             for (HashMap<String, String> hit : scRelArr) {
+                System.out.println("---008");
                 rank++;
                 /* *
                  *  查询id: q.get("id")
@@ -198,25 +206,40 @@ public class XiangMao {
                         append(rank).append(" ").
                         append(hit.get("score")).append(" ").
                         append("STANDARD").append("\n");
+                System.out.println("---009");
             }
+            System.out.println("---010");
             relFileTrecEvalStr.add(pushTrecEvalStr);
         }
         Date date = new Date();
+        System.out.println("---011");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+        System.out.println("---012");
         String dateStr = formatter.format(date);
+        System.out.println("---013");
 
         // 保存trec_eval所需要的文件
         Wrench.saveNew("", "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", Wrench.proBasePath + "/my_record/");
-        for(StringBuilder s : relFileTrecEvalStr)
-            Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar  + "_" + dateStr + "", Wrench.proBasePath + "/my_record/");
+        System.out.println("---014");
+        for(StringBuilder s : relFileTrecEvalStr) {
+            System.out.println("---015");
+            Wrench.saveMore(s.toString(), "my.record_" + tryAnalyzer + "_" + trySimilar + "_" + dateStr + "", Wrench.proBasePath + "/my_record/");
+        }
+
+        System.out.println("---016");
 
         // 保存到上级目录, 只保存最好记录
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
+            System.out.println("---017");
             Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath);
+            System.out.println("---018");
             for (StringBuilder s : relFileTrecEvalStr){
+                System.out.println("---019");
                 Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
             }
+            System.out.println("---020");
         }
+        System.out.println("---021");
     }
 
 
