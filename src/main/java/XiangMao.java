@@ -821,6 +821,29 @@ class Queries {
         System.out.println("After split Big TXT is : " + txt);
         System.out.println("After split []size is : " + txtSplitter.length);
 
+
+        System.out.println("=== Split by \\r ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\r\\.W\\r").length);
+        System.out.println("=== Split by \\n ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\n\\.W\\n").length);
+        System.out.println("=== Split by \\rn ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n").length);
+        System.out.println("=== Split by \\nr ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\n\\r\\.W\\n\\r").length);
+
+
+        System.out.println("=== Split by \\\\r ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\r\\.W\\\\r").length);
+        System.out.println("=== Split by \\\\n ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\n\\.W\\\\n").length);
+        System.out.println("=== Split by \\\\rn ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\r\\\\n\\.W\\\\r\\\\n").length);
+        System.out.println("=== Split by \\\\nr ===");
+        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\n\\\\r\\.W\\\\n\\\\r").length);
+
+
+
+
         Wrench.saveNew("", fileName, savePath);
         for(int i=1; i<txtSplitter.length; i++){
             System.out.println("===---002.002");
