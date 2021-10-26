@@ -897,13 +897,14 @@ class Wrench {
         System.out.println("new test");
         try {
             String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
+            String filnew = file.toString();
 
             System.out.println("fil2 file");
             if(!Files.exists(Paths.get(fil2)))
                 Files.createFile(Paths.get(fil2));
 
             System.out.println("your file");
-            if(!Files.exists(Paths.get(file)))
+            if(!Files.exists(Paths.get(filnew)))
                 Files.createFile(Paths.get(file));
 
         } catch (Exception e) {
