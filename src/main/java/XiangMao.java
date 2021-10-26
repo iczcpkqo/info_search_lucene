@@ -224,8 +224,6 @@ public class XiangMao {
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
             Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath);
             for (StringBuilder s : relFileTrecEvalStr){
-                System.out.println("---019");
-                System.out.println(s.toString());
                 Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
             }
         }
@@ -567,6 +565,16 @@ class LceOpera {
      * @throws ParseException Parser
      */
     public <E> ArrayList<HashMap<String, String>> search(E[] sc, String scField, String type, String similar, int maxResults) throws IOException, ParseException {
+
+
+        System.out.println("in search sc is:" + sc.length);
+        System.out.println("in search sc is:" + scField.toString());
+        System.out.println("in search sc is:" + type.toString());
+        System.out.println("in search sc is:" + similar.toString());
+        System.out.println("in search sc is:" + maxResults);
+
+
+
         if(this.writer == null) {
             System.out.println("Please Set Up Index First!");
             return null;
