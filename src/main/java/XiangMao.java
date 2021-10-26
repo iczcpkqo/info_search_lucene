@@ -222,7 +222,9 @@ public class XiangMao {
 //        System.out.println("---016");
 
         // 保存到上级目录, 只保存最好记录
+        System.out.println("==== this is if ====");
         if(tryAnalyzer.equals("standard") && trySimilar.equals("bm25")) {
+            System.out.println("==== this is IN if  ====");
             Wrench.saveNew("", "my.record_for_search_results.txt", Wrench.proBasePath);
             for (StringBuilder s : relFileTrecEvalStr){
                 Wrench.saveMore(s.toString(), "my.record_for_search_results.txt", Wrench.proBasePath);
@@ -697,15 +699,15 @@ class LceOpera {
 //        String[] relBox = article.split(".I [0-9]*\r\n");
 //        String[] relBox = article.split("(.I [0-9]\\n)|(.I [0-9]\\r\\n)|(.I [0-9]\\r\\n)|(.I [0-9]\\n\\r)");
 //        String[] relBox = article.split(".I 2");
-        System.out.println("Number of Result: " + relBox.length);
-        System.out.println("===1" + article.split(".I [0-9]*\n").length);
-        System.out.println("===2" + article.split(".I [0-9]*\n").length);
-        System.out.println("===3" + article.split(".I [0-9]*\\n").length);
-        System.out.println("===4" + article.split(".I [0-9]*\\n").length);
-        System.out.println("===5" + article.split(".I [0-9]*.*\n").length);
-        System.out.println("===6" + article.split(".I [0-9]*.*\n").length);
-        System.out.println("===7" + article.split(".I [0-9]*.*\\n").length);
-        System.out.println("===8" + article.split(".I [0-9]*.*\\n").length);
+//        System.out.println("Number of Result: " + relBox.length);
+//        System.out.println("===1" + article.split(".I [0-9]*\n").length);
+//        System.out.println("===2" + article.split(".I [0-9]*\n").length);
+//        System.out.println("===3" + article.split(".I [0-9]*\\n").length);
+//        System.out.println("===4" + article.split(".I [0-9]*\\n").length);
+//        System.out.println("===5" + article.split(".I [0-9]*.*\n").length);
+//        System.out.println("===6" + article.split(".I [0-9]*.*\n").length);
+//        System.out.println("===7" + article.split(".I [0-9]*.*\\n").length);
+//        System.out.println("===8" + article.split(".I [0-9]*.*\\n").length);
 
 
         ArrayList<HashMap<String, String>> corArrMap = new ArrayList<>();
