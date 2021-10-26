@@ -912,6 +912,11 @@ class Wrench {
         // ERROR
         System.out.println("get in try");
         try {
+            String fff = "/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyesssssss.txt";
+
+            System.out.println("000 tryyesssssssssss.txt");
+            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
+
             System.out.println("first tryyes.txt");
             Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
             System.out.println("Second no dot new.txt");
