@@ -893,52 +893,63 @@ class Wrench {
 //        }
 
 
+
+
+
+
+
+        String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
+
+        System.out.println("fil2 file");
+        if(!Files.exists(Paths.get(fil2)))
+            Files.createFile(Paths.get(fil2));
+
         // try function
-        System.out.println("new test");
-        try {
-            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
-            String filnew = file.toString();
-
-            System.out.println("fil2 file");
-            if(!Files.exists(Paths.get(fil2)))
-                Files.createFile(Paths.get(fil2));
-
-            System.out.println("your file");
-            if(!Files.exists(Paths.get(filnew)))
-                Files.createFile(Paths.get(file));
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
-        // ERROR
-        System.out.println("get in try");
-        try {
-            String fff = "/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyesssssss.txt";
-
-            System.out.println("000 tryyesssssssssss.txt");
-            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
-
-            System.out.println("first tryyes.txt");
-            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
-            System.out.println("Second no dot new.txt");
-            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cranqrynew.txt"));
-            System.out.println("Second no dot new.txt");
-            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cran.qry.new.txt"));
-            System.out.println("4 .new");
-            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cran.qry.new"));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.out.println("Through Try");
-
-
-
-        System.out.println("try create without TRY");
-        Files.createFile(Paths.get(file));
+//        System.out.println("new test");
+//        try {
+//            String fil2 = "/opt/my_assignment_1/info_search_lucene/src/main/java/cran.qry.new";
+//            String filnew = file.toString();
+//
+//            System.out.println("fil2 file");
+//            if(!Files.exists(Paths.get(fil2)))
+//                Files.createFile(Paths.get(fil2));
+//
+//            System.out.println("your file");
+//            if(!Files.exists(Paths.get(filnew)))
+//                Files.createFile(Paths.get(file));
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//
+//
+//        // ERROR
+//        System.out.println("get in try");
+//        try {
+//            String fff = "/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyesssssss.txt";
+//
+//            System.out.println("000 tryyesssssssssss.txt");
+//            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
+//
+//            System.out.println("first tryyes.txt");
+//            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/tryyes.txt"));
+//            System.out.println("Second no dot new.txt");
+//            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cranqrynew.txt"));
+//            System.out.println("Second no dot new.txt");
+//            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cran.qry.new.txt"));
+//            System.out.println("4 .new");
+//            Files.createFile(Paths.get("/opt/my_assignment_1/info_search_lucene/src/main/java/corpus/cran.qry.new"));
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        System.out.println("Through Try");
+//
+//
+//
+//        System.out.println("try create without TRY");
+//        Files.createFile(Paths.get(file));
         System.out.println("SUCCESSFUL");
 
         if(!Files.exists(Paths.get(file)))
