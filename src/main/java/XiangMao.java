@@ -774,11 +774,11 @@ class Queries {
         this.cranqrel = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/cranqrel")));
         this.TRECeval = new String(Files.readAllBytes(Paths.get(basePath + "/corpus/QRelsCorrectedforTRECeval")));
 
-        System.out.println("=== Before save queries, basePath is: " + basePath);
-        System.out.println("=== Before save queries, this.cranQry is: " + this.cranQry);
-        System.out.println("=== Before save queries, Wrench.proBasePath is: " + Wrench.proBasePath);
+        System.out.println("===---001 Before save queries, basePath is: " + basePath);
+//        System.out.println("=== Before save queries, this.cranQry is: " + this.cranQry);
+        System.out.println("===---002 Before save queries, Wrench.proBasePath is: " + Wrench.proBasePath);
         this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
-        System.out.println("=== After save queries, this.queries is: " + this.queries);
+        System.out.println("===---003 After save queries, this.queries is: " + this.queries);
     }
 
     /**
@@ -817,9 +817,15 @@ class Queries {
     public ArrayList<HashMap<String, String>> txtConvert(String txt, String fileName, String savePath) throws IOException {
         ArrayList<HashMap<String, String>> txtBox = new ArrayList<>();
         String[] txtSplitter = txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n");
+        System.out.println("===---002.001");
+        System.out.println("After split []size is : " + txtSplitter.length);
 
         Wrench.saveNew("", fileName, savePath);
         for(int i=1; i<txtSplitter.length; i++){
+            System.out.println("===---002.002");
+            System.out.println(txtSplitter[i]);
+            System.out.println("===---002.003");
+
             HashMap<String, String> q = new HashMap<String, String >();
             q.put("id", String.valueOf(i));
             q.put("query", txtSplitter[i].replaceAll("\r", "").replaceAll("[?]", " "));
