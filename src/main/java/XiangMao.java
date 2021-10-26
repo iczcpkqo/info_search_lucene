@@ -177,6 +177,7 @@ public class XiangMao {
         ArrayList<StringBuilder> relFileTrecEvalStr = new ArrayList<>();
 
         System.out.println("---002");
+        System.out.println(query.size());
         for (HashMap<String, String> q : query) {
             System.out.println("---003");
             StringBuilder pushTrecEvalStr = new StringBuilder();
