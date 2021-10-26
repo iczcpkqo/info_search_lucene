@@ -567,12 +567,12 @@ class LceOpera {
     public <E> ArrayList<HashMap<String, String>> search(E[] sc, String scField, String type, String similar, int maxResults) throws IOException, ParseException {
 
 
-        System.out.println("in search sc is:" + sc[0]);
-        System.out.println("in search sc.length is:" + sc.length);
-        System.out.println("in search sc is:" + scField.toString());
-        System.out.println("in search sc is:" + type.toString());
-        System.out.println("in search sc is:" + similar.toString());
-        System.out.println("in search sc is:" + maxResults);
+        System.out.println("in search sc is: " + sc[0]);
+        System.out.println("in search sc.length is: " + sc.length);
+        System.out.println("in search scField is: " + scField.toString());
+        System.out.println("in search type is: " + type.toString());
+        System.out.println("in search similar is: " + similar.toString());
+        System.out.println("in search max is: " + maxResults);
 
 
 
@@ -630,7 +630,11 @@ class LceOpera {
         }
 
 
+        System.out.println("=== Before do Search ===");
         ScoreDoc[] hits = iSearcher.search(query, maxResults).scoreDocs;
+        System.out.println("=== Aefore do Search ===");
+        System.out.println("number of hits[]" + hits.length);
+        
 
 //        System.out.println(hits.length);
 
