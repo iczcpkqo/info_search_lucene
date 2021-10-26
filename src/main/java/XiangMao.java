@@ -837,7 +837,7 @@ class Queries {
 
         Wrench.saveNew("", fileName, savePath);
         for(int i=1; i<txtSplitter.length; i++){
-            System.out.println(txtSplitter[i]);
+//            System.out.println(txtSplitter[i]);
             HashMap<String, String> q = new HashMap<String, String >();
             q.put("id", String.valueOf(i));
             q.put("query", txtSplitter[i].replaceAll("\r", "").replaceAll("[?]", " "));
