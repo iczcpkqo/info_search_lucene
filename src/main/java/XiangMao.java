@@ -692,32 +692,20 @@ class LceOpera {
 //        String content = new String(Files.readAllBytes(path));
 //        String content = ".Isdfsdsdfsdf.Ixxxxxx.Txxxxxxxx";
         // 第一项为数量
-//        String[] relBox = article.split(".I [0-9]*\n");
+        String[] relBox = article.split(".I [0-9]*\\n");
 //        String[] relBox = article.split(".I [0-9]*\n");
 //        String[] relBox = article.split(".I [0-9]*\r\n");
-        String[] relBox = article.split("(.I [0-9]\\n)|(.I [0-9]\\r\\n)|(.I [0-9]\\r\\n)|(.I [0-9]\\n\\r)");
+//        String[] relBox = article.split("(.I [0-9]\\n)|(.I [0-9]\\r\\n)|(.I [0-9]\\r\\n)|(.I [0-9]\\n\\r)");
 //        String[] relBox = article.split(".I 2");
         System.out.println("Number of Result: " + relBox.length);
-        System.out.println("===" + relBox[1]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[2]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[3]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[4]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[5]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[6]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[7]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[8]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[9]);
-//        System.out.println("=======================");
-//        System.out.println("===" + relBox[10]);
-//        System.out.println("=======================");
+        System.out.println("===1" + article.split(".I [0-9]*\n").length);
+        System.out.println("===2" + article.split(".I [0-9]*\n").length);
+        System.out.println("===3" + article.split(".I [0-9]*\\n").length);
+        System.out.println("===4" + article.split(".I [0-9]*\\n").length);
+        System.out.println("===5" + article.split(".I [0-9]*.*\n").length);
+        System.out.println("===6" + article.split(".I [0-9]*.*\n").length);
+        System.out.println("===7" + article.split(".I [0-9]*.*\\n").length);
+        System.out.println("===8" + article.split(".I [0-9]*.*\\n").length);
 
 
         ArrayList<HashMap<String, String>> corArrMap = new ArrayList<>();
