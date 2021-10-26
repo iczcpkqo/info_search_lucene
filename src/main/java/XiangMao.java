@@ -816,30 +816,30 @@ class Queries {
      */
     public ArrayList<HashMap<String, String>> txtConvert(String txt, String fileName, String savePath) throws IOException {
         ArrayList<HashMap<String, String>> txtBox = new ArrayList<>();
-        String[] txtSplitter = txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n");
-        System.out.println("===---002.001");
-        System.out.println("After split Big TXT is : " + txt);
-        System.out.println("After split []size is : " + txtSplitter.length);
+        String[] txtSplitter = txt.split("\\.I\\s[0-9]{3}\\n\\.W\\n");
+//        System.out.println("===---002.001");
+//        System.out.println("After split Big TXT is : " + txt);
+//        System.out.println("After split []size is : " + txtSplitter.length);
 
 
-        System.out.println("=== Split by \\r ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\r\\.W\\r").length);
-        System.out.println("=== Split by \\n ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\n\\.W\\n").length);
-        System.out.println("=== Split by \\rn ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n").length);
-        System.out.println("=== Split by \\nr ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\n\\r\\.W\\n\\r").length);
-
-
-        System.out.println("=== Split by \\\\r ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\r\\.W\\\\r").length);
-        System.out.println("=== Split by \\\\n ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\n\\.W\\\\n").length);
-        System.out.println("=== Split by \\\\rn ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\r\\\\n\\.W\\\\r\\\\n").length);
-        System.out.println("=== Split by \\\\nr ===");
-        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\n\\\\r\\.W\\\\n\\\\r").length);
+//        System.out.println("=== Split by \\r ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\r\\.W\\r").length);
+//        System.out.println("=== Split by \\n ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\n\\.W\\n").length);
+//        System.out.println("=== Split by \\rn ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\r\\n\\.W\\r\\n").length);
+//        System.out.println("=== Split by \\nr ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\n\\r\\.W\\n\\r").length);
+//
+//
+//        System.out.println("=== Split by \\\\r ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\r\\.W\\\\r").length);
+//        System.out.println("=== Split by \\\\n ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\n\\.W\\\\n").length);
+//        System.out.println("=== Split by \\\\rn ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\r\\\\n\\.W\\\\r\\\\n").length);
+//        System.out.println("=== Split by \\\\nr ===");
+//        System.out.println(txt.split("\\.I\\s[0-9]{3}\\\\n\\\\r\\.W\\\\n\\\\r").length);
 
 
 
