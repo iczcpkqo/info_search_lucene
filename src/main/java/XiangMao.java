@@ -769,7 +769,7 @@ class Queries {
 //        System.out.println("=== Before save queries, this.cranQry is: " + this.cranQry);
         System.out.println("===---002 Before save queries, Wrench.proBasePath is: " + Wrench.proBasePath);
         this.queries = txtConvert(this.cranQry, "cran.qry.new", Wrench.proBasePath + "/corpus/");
-        System.out.println("===---003 After save queries, this.queries is: " + this.queries);
+        System.out.println("===---003 After save queries, this.queries is: " + this.queries.size());
     }
 
     /**
